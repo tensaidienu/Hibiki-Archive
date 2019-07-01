@@ -3,8 +3,8 @@
 #include "Game.h"
 #include "TextureManager.h"
 #include "InputHandler.h"
-//#include "Player.h"
-//#include "Enemy.h"
+#include "Player.h"
+#include "Enemy.h"
 //#include "PlayState.h"
 //#include "MainMenuState.h"
 //#include "MenuButton.h"
@@ -61,11 +61,11 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     
     TheInputHandler::getInstance()->initialiseJoysticks();
 
-    /*TheGameObjectFactory::getInstance()->registerType("MenuButton", new MenuButtonCreator());	
+    //TheGameObjectFactory::getInstance()->registerType("MenuButton", new MenuButtonCreator());	
 	TheGameObjectFactory::getInstance()->registerType("Player", new PlayerCreator());
     TheGameObjectFactory::getInstance()->registerType("Enemy", new EnemyCreator());
-	TheGameObjectFactory::getInstance()->registerType("AnimatedGraphic", new AnimatedGraphicCreator());
-    */
+	//TheGameObjectFactory::getInstance()->registerType("AnimatedGraphic", new AnimatedGraphicCreator());
+    
 	//gameStateMachine = new GameStateMachine();
 	//gameStateMachine->changeState(new MainMenuState());
 
@@ -76,8 +76,9 @@ bool Game::init(const char* title, int xpos, int ypos, int width, int height, in
     if(!TheTextureManager::getInstance()->loadImg("../Assets/Characters/officeman4.png", "officeman4", renderer)){
         return false;
     }
-
-    //gameObjects.push_back(new Player(new LoaderParams(100, 100, 32, 48,"country-platform-back")));
+    GameObject* player = TheGameObjectFactory::getInstance()->create("Player");
+    player->load(new LoaderParams(100, 100, 32, 48, "officeman4"));
+    gameObjects.push_back(player);
     //gameObjects.push_back(new Player(new LoaderParams(100, 100, 32, 48,"gothloli2")));
     //gameObjects.push_back(new Enemy(new LoaderParams(300, 300, 32, 48,"officeman4")));
     SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, "Init success");  
@@ -95,10 +96,10 @@ void Game::handleEvents() {
 
 void Game::update() {
     //gameStateMachine->update();
-    /*
+    
     for(std::vector<GameObject*>::size_type i = 0; i != gameObjects.size(); i++) {
         gameObjects[i]->update();
-    }*/
+    }
     //SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, std::to_string(currentFrame).c_str());  
 }
 
@@ -106,8 +107,7 @@ void Game::render() {
     SDL_RenderClear(renderer); // clear the renderer to the draw color
     
     TheTextureManager::getInstance()->drawFrame("gothloli2", 100, 100, 32, 48, 1, currentFrame, renderer);
-    TheTextureManager::getInstance()->drawFrame("gothloli2", 150, 150, 32, 48, 1, currentFrame, renderer);
-    //Game::draw();
+    Game::draw();
 
     //gameStateMachine->render();
 
@@ -115,9 +115,9 @@ void Game::render() {
 }
 
 void Game::draw() {
-    /*for(std::vector<GameObject*>::size_type i = 0; i != gameObjects.size(); i++) {
+    for(std::vector<GameObject*>::size_type i = 0; i != gameObjects.size(); i++) {
         gameObjects[i]->draw();
-    }*/
+    }
 }
 
 void Game::clean() {

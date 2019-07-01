@@ -5,7 +5,7 @@
 
 #include "SDL2/SDL.h"
 
-//#include "GameObject.h"
+#include "GameObject.h"
 //#include "GameStateMachine.h"
 
 class Game {
@@ -19,7 +19,7 @@ class Game {
         SDL_Renderer* renderer;
         SDL_Texture* texture;
 
-        //std::vector<GameObject*> gameObjects;
+        std::vector<GameObject*> gameObjects;
 
         int gameWidth;
 	    int gameHeight;
