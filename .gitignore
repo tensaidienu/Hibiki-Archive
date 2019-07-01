@@ -30,3 +30,8 @@
 *.exe
 *.out
 *.app
+Assets/
+Build/
+日程.txt
+.vscode/settings.json
+.vscode/
