@@ -3,9 +3,9 @@ cmake_minimum_required (VERSION 3.7)
 
 project("HibikiOrigins")
 
-set(TEMP MainMenuState.cpp GameStateMachine.cp PlayState.cpp MenuButton.cpp PauseState.cpp 
-AnimatedGraphic.cpp GameOverState.cpp StateParser.cpp Level.cpp TileLayer.cpp 
-LevelParser.cpp GlobalVariables.cpp ObjectLayer.cpp)
+set(TEMP PlayState.cpp PauseState.cpp 
+ GameOverState.cpp  Level.cpp TileLayer.cpp 
+LevelParser.cpp  ObjectLayer.cpp)
 
 # Find SDL2, SDL2_image and SDL2_gfx libraries
 find_package(PkgConfig REQUIRED)
@@ -13,7 +13,8 @@ pkg_check_modules(SDL2 REQUIRED sdl2 SDL2_ttf SDL2_mixer SDL2_image SDL2_net SDL
 
 include_directories(${PROJECT_NAME} ${SDL2_INCLUDE_DIRS})
 add_executable(${PROJECT_NAME} Main.cpp Game.cpp TextureManager.cpp InputHandler.cpp
-SDLGameObject.cpp Player.cpp Enemy.cpp GameObjectFactory.cpp
+SDLGameObject.cpp Player.cpp Enemy.cpp GameObjectFactory.cpp StateParser.cpp
+MainMenuState.cpp GameStateMachine.cpp MenuButton.cpp AnimatedGraphic.cpp GlobalVariables.cpp
 
 tinyXml/tinyxml.cpp tinyXml/tinystr.cpp tinyXml/tinyxmlerror.cpp tinyXml/tinyxmlparser.cpp tinyXml/tinyxml.h
 tinyXml/tinystr.h base64/base64.cpp icon.rc)

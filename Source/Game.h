@@ -6,7 +6,7 @@
 #include "SDL2/SDL.h"
 
 #include "GameObject.h"
-//#include "GameStateMachine.h"
+#include "GameStateMachine.h"
 
 class Game {
     private:
@@ -26,7 +26,7 @@ class Game {
         int currentFrame;
         bool gameRunning;
 
-        //GameStateMachine* gameStateMachine;
+        GameStateMachine* gameStateMachine;
     public:
         static Game* getInstance() {
             if(gameInstance == 0) {
@@ -43,7 +43,7 @@ class Game {
         void clean();
         bool isGameRunning();
         SDL_Renderer* getRenderer() const { return renderer; }
-        //GameStateMachine* getStateMachine() { return gameStateMachine; }
+        GameStateMachine* getStateMachine() { return gameStateMachine; }
         int getGameWidth() const { return gameWidth; }
         int getGameHeight() const { return gameHeight; }
 };
