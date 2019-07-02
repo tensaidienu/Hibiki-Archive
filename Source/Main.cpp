@@ -1,8 +1,7 @@
 #include <iostream>
 
-#include "Game.h"
+#include "GameController.h"
 
-Game* game = NULL;
 const int FPS = 60;
 const int DELAY_TIME = 1000.0f / FPS;
 

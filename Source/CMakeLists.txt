@@ -3,19 +3,29 @@ cmake_minimum_required (VERSION 3.7)
 
 project("HibikiOrigins")
 
-set(TEMP PauseState.cpp GameOverState.cpp )
+set(MAIN Main.cpp GameController.cpp GlobalVariables.cpp)
+
+set(FACTORIES Factories/GameObjectFactory.cpp)
+
+set(GAME_OBJECTS GameObjects/SDLGameObject.cpp GameObjects/Player.cpp GameObjects/Enemy.cpp 
+    GameObjects/MenuButton.cpp GameObjects/AnimatedGraphic.cpp)
+
+set(LEVELS Levels/Level.cpp Levels/TileLayer.cpp Levels/LevelParser.cpp  Levels/ObjectLayer.cpp)
+
+set(LIBS Libs/tinyXml/tinyxml.cpp Libs/tinyXml/tinystr.cpp Libs/tinyXml/tinyxmlerror.cpp 
+    Libs/tinyXml/tinyxmlparser.cpp
+    Libs/base64/base64.cpp)
+
+set(MANAGERS Managers/TextureManager.cpp Managers/InputManager.cpp)
+
+set(STATES States/StateParser.cpp States/MainMenuState.cpp States/GameStateMachine.cpp 
+    States/PlayState.cpp States/PauseState.cpp States/GameOverState.cpp)
+
 
 # Find SDL2, SDL2_image and SDL2_gfx libraries
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(SDL2 REQUIRED sdl2 SDL2_ttf SDL2_mixer SDL2_image SDL2_net SDL2_gfx zlib)
 
 include_directories(${PROJECT_NAME} ${SDL2_INCLUDE_DIRS})
-add_executable(${PROJECT_NAME} Main.cpp Game.cpp TextureManager.cpp InputHandler.cpp
-SDLGameObject.cpp Player.cpp Enemy.cpp GameObjectFactory.cpp StateParser.cpp
-MainMenuState.cpp GameStateMachine.cpp MenuButton.cpp AnimatedGraphic.cpp GlobalVariables.cpp
-Level.cpp TileLayer.cpp LevelParser.cpp  ObjectLayer.cpp PlayState.cpp
-PauseState.cpp GameOverState.cpp
-
-tinyXml/tinyxml.cpp tinyXml/tinystr.cpp tinyXml/tinyxmlerror.cpp tinyXml/tinyxmlparser.cpp tinyXml/tinyxml.h
-tinyXml/tinystr.h base64/base64.cpp icon.rc)
+add_executable(${PROJECT_NAME}  ${MAIN} ${FACTORIES} ${GAME_OBJECTS} ${LEVELS} ${LIBS} ${MANAGERS} ${STATES} icon.rc)
 target_link_libraries(${PROJECT_NAME} ${SDL2_LIBRARIES})
