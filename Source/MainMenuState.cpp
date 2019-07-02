@@ -3,7 +3,7 @@
 #include "MainMenuState.h"
 #include "Game.h"
 #include "TextureManager.h"
-//#include "PlayState.h"
+#include "PlayState.h"
 #include "MenuButton.h"
 #include "StateParser.h"
 
@@ -50,7 +50,7 @@ bool MainMenuState::onExit() {
 
 void MainMenuState::menuToPlay() {
     std::cout << "Play button clicked\n" << std::endl;
-    //TheGame::getInstance()->getStateMachine()->changeState(new PlayState());
+    TheGame::getInstance()->getStateMachine()->changeState(new PlayState());
 }
 
 void MainMenuState::exitFromMenu() {

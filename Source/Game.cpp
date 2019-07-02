@@ -5,7 +5,7 @@
 #include "InputHandler.h"
 #include "Player.h"
 #include "Enemy.h"
-//#include "PlayState.h"
+#include "PlayState.h"
 #include "MainMenuState.h"
 #include "MenuButton.h"
 #include "AnimatedGraphic.h"
@@ -90,7 +90,7 @@ void Game::handleEvents() {
     TheInputHandler::getInstance()->update();
 
     if(TheInputHandler::getInstance()->isKeyDown(SDL_SCANCODE_RETURN)) {
-      //  gameStateMachine->changeState(new PlayState());
+        gameStateMachine->changeState(new PlayState());
     }
 }
 
