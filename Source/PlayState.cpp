@@ -3,8 +3,8 @@
 #include "PlayState.h"
 #include "Game.h"
 #include "TextureManager.h"
-//#include "PauseState.h"
-//#include "GameOverState.h"
+#include "PauseState.h"
+#include "GameOverState.h"
 #include "StateParser.h"
 #include "InputHandler.h"
 #include "LevelParser.h"
@@ -13,7 +13,7 @@ const std::string PlayState::playID = "PLAY";
 
 void PlayState::update() {
     if(TheInputHandler::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
-        //TheGame::getInstance()->getStateMachine()->pushState(new PauseState());
+        TheGame::getInstance()->getStateMachine()->pushState(new PauseState());
     }
 
     level->update();

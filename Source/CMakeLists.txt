@@ -14,6 +14,7 @@ add_executable(${PROJECT_NAME} Main.cpp Game.cpp TextureManager.cpp InputHandler
 SDLGameObject.cpp Player.cpp Enemy.cpp GameObjectFactory.cpp StateParser.cpp
 MainMenuState.cpp GameStateMachine.cpp MenuButton.cpp AnimatedGraphic.cpp GlobalVariables.cpp
 Level.cpp TileLayer.cpp LevelParser.cpp  ObjectLayer.cpp PlayState.cpp
+PauseState.cpp GameOverState.cpp
 
 tinyXml/tinyxml.cpp tinyXml/tinystr.cpp tinyXml/tinyxmlerror.cpp tinyXml/tinyxmlparser.cpp tinyXml/tinyxml.h
 tinyXml/tinystr.h base64/base64.cpp icon.rc)
