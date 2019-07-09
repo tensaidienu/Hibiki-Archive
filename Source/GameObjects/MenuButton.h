@@ -18,7 +18,7 @@ class MenuButton : public SDLGameObject {
         bool released;
     public:
         MenuButton();
-        
+        ~MenuButton();
         virtual void load(const LoaderParams* params);
         virtual void draw();
         virtual void update();

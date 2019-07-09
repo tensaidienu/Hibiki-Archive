@@ -6,10 +6,9 @@
 #include "../LoaderParams.h"
 
 class GameObject {
-    protected:
+    public:
         GameObject() {}
         virtual ~GameObject() {}
-    public:
         virtual void load(const LoaderParams* params) = 0;
         virtual void draw() = 0;
         virtual void update() = 0;

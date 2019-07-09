@@ -21,6 +21,8 @@ set(MANAGERS Managers/TextureManager.cpp Managers/InputManager.cpp)
 set(STATES States/StateParser.cpp States/MainMenuState.cpp States/GameStateMachine.cpp 
     States/PlayState.cpp States/PauseState.cpp States/GameOverState.cpp)
 
+set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
+set (CMAKE_LINKER_FLAGS_DEBUG "${CMAKE_LINKER_FLAGS_DEBUG} -fno-omit-frame-pointer -fsanitize=address")
 
 # Find SDL2, SDL2_image and SDL2_gfx libraries
 find_package(PkgConfig REQUIRED)

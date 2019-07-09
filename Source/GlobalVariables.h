@@ -3,6 +3,13 @@
 
 #include <iostream>
 
+typedef enum {
+    HIBIKI_MAIN_MENU = 1,
+    HIBIKI_PLAY,
+    HIBIKI_PAUSE,
+    HIBIKI_GAME_OVER
+} Hibiki_GameState;
+
 class GlobalVariables {
     private:
         GlobalVariables(){}

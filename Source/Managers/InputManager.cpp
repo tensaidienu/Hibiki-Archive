@@ -6,9 +6,8 @@
 InputManager* InputManager::InputManagerInstance = 0;
 
 InputManager::InputManager() {
-    //onKeyDown();
+    onKeyDown();
     mousePosition = new Vector2D(0, 0);
-
     for (int x = 0; x < 3; x++) {
         mouseButtonStates.push_back(false);
     }

@@ -12,6 +12,7 @@
 class Enemy : public SDLGameObject {
     public:
         Enemy();
+        ~Enemy(){};
 
         virtual void load(const LoaderParams* params);
         virtual void draw();

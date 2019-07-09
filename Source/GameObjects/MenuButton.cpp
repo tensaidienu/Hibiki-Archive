@@ -34,3 +34,7 @@ void MenuButton::update() {
 void MenuButton::clean() {
     SDLGameObject::clean();
 }
+
+MenuButton::~MenuButton() {
+    
+}

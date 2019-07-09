@@ -25,9 +25,9 @@ class Level {
         std::vector<Tileset> tilesets;
         std::vector<Layer*> layers;
         friend class LevelParser;
-        Level() {}
-        ~Level() {}
-    public:        
+    public:
+        Level();
+        ~Level();
         void update();
         void render();
         void clear();

@@ -26,12 +26,8 @@ void Player::clean() {
 }
 
 void Player::handleInput() {
-    Vector2D* target = TheInputManager::getInstance()->getMousePosition();
-    velocity = *target - position;
-    velocity /= 50;
-
     //--------------------------------------------PLAYER KEYBOARD EVENTS--------------------------------------------
-    /*if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_RIGHT)) {
+    if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_RIGHT)) {
         velocity.setX(2);
     }
     if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_LEFT)) {
@@ -42,7 +38,7 @@ void Player::handleInput() {
     }
     if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_DOWN)) {
         velocity.setY(2);
-    }*/
+    }
 
     //--------------------------------------------PLAYER MOUSE EVENTS--------------------------------------------
     //Move player using mouse position
@@ -52,6 +48,10 @@ void Player::handleInput() {
     //if(TheInputManager::getInstance()->getMouseButtonState(LEFT)) {
         //velocity.setX(1);
     //}
+
+    /*Vector2D* target = TheInputManager::getInstance()->getMousePosition();
+    velocity = *target - position;
+    velocity /= 50;*/
 
     //--------------------------------------------PLAYER JOYSTICK EVENTS--------------------------------------------
     /*if(TheInputManager::getInstance()->isJoysticksInitialised()) {

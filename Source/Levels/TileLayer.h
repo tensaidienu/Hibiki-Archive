@@ -6,15 +6,6 @@
 #include "../Vector2D.h"
 
 class TileLayer : public Layer {
-    public:
-        TileLayer(int tileSize, const std::vector<Tileset> &tilesets);
-        virtual void update();
-        virtual void render();
-        void setTileIDs(const std::vector<std::vector<int>>& data){ tileIDs = data; }
-        void setTileSize(int tileSize) { this->tileSize = tileSize; }
-        Tileset getTilesetByID(int tileID);
-        int offsetX;
-        int offsetY;
     private:
         int numColumns;
         int numRows;
@@ -27,6 +18,16 @@ class TileLayer : public Layer {
         const unsigned FLIPPED_HORIZONTALLY_FLAG = 0x80000000;
         const unsigned FLIPPED_VERTICALLY_FLAG   = 0x40000000;
         const unsigned FLIPPED_DIAGONALLY_FLAG   = 0x20000000;
+    public:
+        TileLayer(int tileSize, const std::vector<Tileset> &tilesets);
+        ~TileLayer();
+        virtual void update();
+        virtual void render();
+        void setTileIDs(const std::vector<std::vector<int>>& data){ tileIDs = data; }
+        void setTileSize(int tileSize) { this->tileSize = tileSize; }
+        Tileset getTilesetByID(int tileID);
+        int offsetX;
+        int offsetY;    
 };
 
 #endif

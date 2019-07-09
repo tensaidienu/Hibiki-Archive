@@ -1,10 +1,13 @@
 #include "GameOverState.h"
-#include "MainMenuState.h"
-#include "PlayState.h"
+
 #include "../GameController.h"
+#include "../GlobalVariables.h"
+
 #include "../GameObjects/AnimatedGraphic.h"
 #include "../GameObjects/MenuButton.h"
+
 #include "../Managers/TextureManager.h"
+
 #include "StateParser.h"
 
 const std::string GameOverState::gameOverID = "GAMEOVER";
@@ -44,11 +47,11 @@ bool GameOverState::onExit() {
 }
 
 void GameOverState::gameOverToMain() {
-	TheGame::getInstance()->getStateMachine()->changeState(new MainMenuState());
+	TheGame::getInstance()->getStateMachine()->changeState(HIBIKI_MAIN_MENU);
 }
 
 void GameOverState::restartPlay() {
-	TheGame::getInstance()->getStateMachine()->changeState(new PlayState());
+	TheGame::getInstance()->getStateMachine()->changeState(HIBIKI_PLAY);
 }
 
 void GameOverState::setCallbacks(const std::vector<Callback>& callbacks) {

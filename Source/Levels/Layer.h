@@ -2,9 +2,8 @@
 #define __Layer_h__
 
 class Layer {
-    protected:
-        virtual ~Layer() {}
     public:
+        virtual ~Layer() {}
         virtual void render() = 0;
         virtual void update() = 0;
 };

@@ -7,14 +7,16 @@
 #include "../GameObjects/GameObject.h"
 
 class ObjectLayer : public Layer {
+    private:
+        std::vector<GameObject*> gameObjects;
     public:
+        ObjectLayer();
+        ~ObjectLayer();
         virtual void update();
         virtual void render();
         std::vector<GameObject*>* getGameObjects() {
             return &gameObjects;
-        }
-    private:
-        std::vector<GameObject*> gameObjects;
+        }    
 };
 
 #endif

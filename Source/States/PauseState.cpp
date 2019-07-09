@@ -1,22 +1,27 @@
 #include <iostream>
 
-#include "PauseState.h"
-#include "MainMenuState.h"
-#include "../GameObjects/MenuButton.h"
 #include "../GameController.h"
+#include "../GlobalVariables.h"
+
 #include "../Managers/TextureManager.h"
 #include "../Managers/InputManager.h"
-#include "PlayState.h"
+
+#include "../GameObjects/MenuButton.h"
+
+#include "PauseState.h"
 #include "StateParser.h"
 
 const std::string PauseState::pauseID = "PAUSE";
 
 void PauseState::pauseToMain() {
-    TheGame::getInstance()->getStateMachine()->changeState(new MainMenuState());
+    TheGame::getInstance()->getStateMachine()->pauseToMain();
+    //TheGame::getInstance()->getStateMachine()->popState();
+    //TheGame::getInstance()->getStateMachine()->changeState(HIBIKI_MAIN_MENU);
 }
 
 void PauseState::resumePlay() {
-    TheGame::getInstance()->getStateMachine()->popState();
+    TheGame::getInstance()->getStateMachine()->resumePlay();
+    //TheGame::getInstance()->getStateMachine()->popState();
 }
 
 void PauseState::update() {

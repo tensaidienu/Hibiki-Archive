@@ -18,6 +18,7 @@ class SDLGameObject : public GameObject {
         Vector2D acceleration;
     public:
         SDLGameObject();
+        ~SDLGameObject(){};
 
         virtual void load(const LoaderParams* params);
         virtual void draw();

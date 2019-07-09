@@ -1,12 +1,13 @@
 #include <iostream>
 
 #include "GameController.h"
+#include "GlobalVariables.h"
+
 #include "Managers/TextureManager.h"
 #include "Managers/InputManager.h"
+
 #include "GameObjects/Player.h"
 #include "GameObjects/Enemy.h"
-#include "States/PlayState.h"
-#include "States/MainMenuState.h"
 #include "GameObjects/MenuButton.h"
 #include "GameObjects/AnimatedGraphic.h"
 
@@ -14,7 +15,6 @@ using namespace std;
 
 GameController* GameController::gameInstance = 0;
 
-/*
 GameController::GameController() {
    mainWindow   = NULL;
    renderer = NULL;
@@ -24,7 +24,6 @@ GameController::GameController() {
 GameController::~GameController() {
 
 }
-*/
 
 bool GameController::init(const char* title, int xpos, int ypos, int width, int height, int flags) {
     //flags = SDL_WINDOW_RESIZABLE;
@@ -58,8 +57,6 @@ bool GameController::init(const char* title, int xpos, int ypos, int width, int 
         SDL_LogMessage(0, SDL_LOG_PRIORITY_ERROR, "SDL init fail");
         return false;
     }
-    
-    TheInputManager::getInstance()->initialiseJoysticks();
 
     TheGameObjectFactory::getInstance()->registerType("MenuButton", new MenuButtonCreator());	
 	TheGameObjectFactory::getInstance()->registerType("Player", new PlayerCreator());
@@ -67,7 +64,7 @@ bool GameController::init(const char* title, int xpos, int ypos, int width, int 
 	TheGameObjectFactory::getInstance()->registerType("AnimatedGraphic", new AnimatedGraphicCreator());
     
 	gameStateMachine = new GameStateMachine();
-	gameStateMachine->changeState(new MainMenuState());
+	gameStateMachine->initialState();
 
     // load sprites -> gothloli2.png, officeman4.png -> 32x48
     /*if(!TheTextureManager::getInstance()->loadImg("../Assets/Characters/gothloli2.png", "gothloli2", renderer)){
@@ -90,24 +87,17 @@ void GameController::handleEvents() {
     TheInputManager::getInstance()->update();
 
     if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_RETURN)) {
-        gameStateMachine->changeState(new PlayState());
+        gameStateMachine->changeState(HIBIKI_MAIN_MENU);
     }
 }
 
 void GameController::update() {
     gameStateMachine->update();
-    
-    /*for(std::vector<GameObject*>::size_type i = 0; i != gameObjects.size(); i++) {
-        gameObjects[i]->update();
-    }*/
     //SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, std::to_string(currentFrame).c_str());  
 }
 
 void GameController::render() {
     SDL_RenderClear(renderer); // clear the renderer to the draw color
-    
-    //TheTextureManager::getInstance()->drawFrame("gothloli2", 100, 100, 32, 48, 1, currentFrame, renderer);
-    //::draw();
 
     gameStateMachine->render();
 
@@ -115,9 +105,7 @@ void GameController::render() {
 }
 
 void GameController::draw() {
-    /*for(std::vector<GameObject*>::size_type i = 0; i != gameObjects.size(); i++) {
-        gameObjects[i]->draw();
-    }*/
+
 }
 
 void GameController::clean() {

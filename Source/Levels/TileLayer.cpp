@@ -8,8 +8,8 @@ TileLayer::TileLayer(int tileSize, const std::vector<Tileset> &tilesets) : tileS
 }
 
 void TileLayer::update() {
-    position += velocity;
-    velocity.setX(1);
+    //position += velocity;
+    //velocity.setX(1);
 }
 
 void TileLayer::render() {
@@ -50,6 +50,13 @@ void TileLayer::render() {
             }
         }
     }
+}
+
+TileLayer::~TileLayer() {
+    for (auto it : tileIDs) {
+        it.clear();
+    }
+    tileIDs.clear();
 }
 
 Tileset TileLayer::getTilesetByID(int tileID) {

@@ -1,10 +1,13 @@
 #include <iostream>
 
-#include "MainMenuState.h"
 #include "../GameController.h"
+#include "../GlobalVariables.h"
+
 #include "../Managers/TextureManager.h"
-#include "PlayState.h"
+
 #include "../GameObjects/MenuButton.h"
+
+#include "MainMenuState.h"
 #include "StateParser.h"
 
 const std::string MainMenuState::menuID = "MENU";
@@ -50,7 +53,7 @@ bool MainMenuState::onExit() {
 
 void MainMenuState::menuToPlay() {
     std::cout << "Play button clicked\n" << std::endl;
-    TheGame::getInstance()->getStateMachine()->changeState(new PlayState());
+    TheGame::getInstance()->getStateMachine()->changeState(HIBIKI_PLAY);
 }
 
 void MainMenuState::exitFromMenu() {

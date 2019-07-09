@@ -10,8 +10,8 @@
 
 class GameController {
     private:
-        GameController(){}
-        ~GameController(){}
+        GameController();
+        ~GameController();
 
         static GameController* gameInstance;
 

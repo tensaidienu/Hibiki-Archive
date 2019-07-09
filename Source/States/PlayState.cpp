@@ -1,19 +1,26 @@
 #include <iostream>
 
-#include "PlayState.h"
 #include "../GameController.h"
+#include "../GlobalVariables.h"
+
 #include "../Managers/TextureManager.h"
-#include "PauseState.h"
-#include "GameOverState.h"
-#include "StateParser.h"
 #include "../Managers/InputManager.h"
 #include "../Levels/LevelParser.h"
 
+#include "PlayState.h"
+#include "StateParser.h"
+
 const std::string PlayState::playID = "PLAY";
+
+PlayState::PlayState(){
+
+}
 
 void PlayState::update() {
     if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_ESCAPE)) {
-        TheGame::getInstance()->getStateMachine()->pushState(new PauseState());
+        TheGame::getInstance()->getStateMachine()->changeState(HIBIKI_PAUSE);
+        //TheGame::getInstance()->getStateMachine()->pushState("Pause");
+        //TheGame::getInstance()->getStateMachine()->pause();
     }
 
     level->update();
@@ -77,4 +84,12 @@ bool PlayState::checkCollision(SDLGameObject* p1, SDLGameObject* p2) {
     if( rightA <= leftB ){return false; }
     if( leftA >= rightB ){return false;}*/
     return true;
+}
+
+PlayState::~PlayState() {
+    delete level;
+    for (auto it : gameObjects) {
+        delete it;
+    }
+    gameObjects.clear();
 }

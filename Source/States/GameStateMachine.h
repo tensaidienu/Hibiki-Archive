@@ -3,15 +3,22 @@
 
 #include <vector>
 
+#include "../GlobalVariables.h"
+
 #include "GameState.h"
 
 class GameStateMachine {
     private:
-        std::vector<GameState*> gameStates;
+        GameState* gameState;
+        GameState* tempGameState;
+        bool wait = false;
     public:
-        void pushState(GameState* state);
-        void changeState(GameState* state);
-        void popState();
+        GameStateMachine();
+        ~GameStateMachine();
+        void initialState();
+        void changeState(Hibiki_GameState type);
+        void pauseToMain();
+        void resumePlay();
         void update();
         void render();
 };

@@ -14,7 +14,7 @@ class Player : public SDLGameObject {
         void handleInput();
     public:
         Player();
-        
+        ~Player(){};
         virtual void load(const LoaderParams* params);
         virtual void draw();
         virtual void update();

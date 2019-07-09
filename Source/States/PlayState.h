@@ -16,6 +16,8 @@ class PlayState : public GameState {
         Level* level;
         std::vector<GameObject*> gameObjects;
     public:
+        PlayState();
+        ~PlayState();
         virtual void update();
         virtual void render();
         virtual bool onEnter();
