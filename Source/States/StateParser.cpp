@@ -3,10 +3,10 @@
 #include "../GameController.h"
 #include "../Factories/GameObjectFactory.h"
 
-bool StateParser::parseState(const char *stateFile, std::string stateID, std::vector<GameObject*> *objects, std::vector<std::string> *textureIDs) {	
+bool StateParser::parseState(std::string stateFile, std::string stateID, std::vector<GameObject*> *objects, std::vector<std::string> *textureIDs) {	
 	TiXmlDocument xmlDoc;
 
-	if (!xmlDoc.LoadFile(stateFile)) {
+	if (!xmlDoc.LoadFile(stateFile.c_str())) {
         std::cerr << xmlDoc.ErrorDesc() << "\n";
 		return false; // erro a carregar o ficheiro
 	}

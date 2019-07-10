@@ -43,7 +43,7 @@ void PlayState::render() {
 
 bool PlayState::onEnter() {
     LevelParser levelParser;
-    level = levelParser.parseLevel("../Assets/SDL/TensaiMap5.tmx");
+    level = levelParser.parseLevel(PATH_MAPS+"TensaiMap.tmx");
     std::cout << "entering PlayState\n";
 
     return true;

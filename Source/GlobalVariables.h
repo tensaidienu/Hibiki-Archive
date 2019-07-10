@@ -10,6 +10,14 @@ typedef enum {
     HIBIKI_GAME_OVER
 } Hibiki_GameState;
 
+static const std::string PATH_ASSETS = "../Assets/";
+static const std::string PATH_MAPS = "../Assets/Maps/";
+static const std::string PATH_TILESETS = "../Assets/Maps/Tilesets/";
+static const std::string PATH_TSX = "../Assets/Maps/TSX/";
+static const std::string PATH_CHARACTERS = "../Assets/Characters/";
+static const std::string PATH_GUI = "../Assets/GUI/";
+static const std::string PATH_MENU = "../Assets/GUI/Menu/";
+
 class GlobalVariables {
     private:
         GlobalVariables(){}
@@ -23,11 +31,9 @@ class GlobalVariables {
                 return globalVariablesInstance;
             }
             return globalVariablesInstance;
-        }
-        int getTest() const { return 555; }
-        std::string ASSETS_PATH = "../Assets/";
-        std::string MAP_PATH = "../Assets/SDL/";
-        std::string IMAGE_PATH = "../Assets/Map/";
+        }        
+        
+        
 };
 
 typedef GlobalVariables TheGlobalVariables;

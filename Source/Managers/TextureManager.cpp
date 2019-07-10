@@ -1,3 +1,5 @@
+#include <algorithm>
+
 #include "TextureManager.h"
 
 #include "SDL2/SDL_image.h"
@@ -10,17 +12,22 @@ SDL_Surface* TextureManager::loadImgSurface(std::string fileName){
     return IMG_Load(fileName.c_str());
 }
 
-bool TextureManager::loadImg(std::string fileName, std::string id, SDL_Renderer* renderer, int transparency) {
+bool TextureManager::loadImg(std::string fileName, std::string id, SDL_Renderer* renderer, std::string transparency) {
     SDL_Surface* tempSurface = IMG_Load(fileName.c_str());
     if(tempSurface == 0) {
         return false;
     }
 
-    if(transparency > 0){
-        int r = ((transparency >> 16) & 0xFF) / 255.0;  // Extract the RR byte
-        int g = ((transparency >> 8) & 0xFF) / 255.0;   // Extract the GG byte
-        int b = ((transparency) & 0xFF) / 255.0;
-        SDL_SetColorKey(tempSurface, SDL_TRUE, SDL_MapRGB(tempSurface->format, 248, 0, 248));
+    if(transparency.compare("0")){        
+        transparency.erase(std::remove(transparency.begin(), transparency.end(), '#'), transparency.end());
+        while(transparency.length() != 6) {
+            transparency += "0";
+        }
+        std::vector<string> color = SplitWithCharacters(transparency, 2);
+        int r = stoi(color[0],nullptr,16);
+        int g = stoi(color[1],nullptr,16);
+        int b = stoi(color[2],nullptr,16);
+        SDL_SetColorKey(tempSurface, SDL_TRUE, SDL_MapRGB(tempSurface->format, r, g, b));
     }
 
     SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, tempSurface);
@@ -33,6 +40,23 @@ bool TextureManager::loadImg(std::string fileName, std::string id, SDL_Renderer*
     }
     // reaching here means something went wrong
     return false;
+}
+
+std::vector<std::string> TextureManager::SplitWithCharacters(const std::string& str, int splitLength) {
+  int NumSubstrings = str.length() / splitLength;
+  std::vector<std::string> ret;
+
+  for (int i = 0; i < NumSubstrings; i++) {
+     ret.push_back(str.substr(i * splitLength, splitLength));
+  }
+
+  // If there are leftover characters, create a shorter item at the end.
+  if (str.length() % splitLength != 0) {
+      ret.push_back(str.substr(splitLength * NumSubstrings));
+  }
+
+
+  return ret;
 }
 
 void TextureManager::draw(std::string id, int x, int y, int width, int height, SDL_Renderer* renderer, SDL_RendererFlip flip) {

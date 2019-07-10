@@ -11,6 +11,7 @@ class SDLGameObject : public GameObject {
         int currentRow;
         int currentFrame;
         int numFrames;
+        int direction;
         std::string textureID;
 
         Vector2D position;

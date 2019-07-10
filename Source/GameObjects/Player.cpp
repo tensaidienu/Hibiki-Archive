@@ -29,15 +29,17 @@ void Player::handleInput() {
     //--------------------------------------------PLAYER KEYBOARD EVENTS--------------------------------------------
     if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_RIGHT)) {
         velocity.setX(2);
+        direction = 1;
     }
     if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_LEFT)) {
         velocity.setX(-2);
+        direction = 2;
     }
     if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_UP)) {
-        velocity.setY(-2);
+        //velocity.setY(-2);
     }
     if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_DOWN)) {
-        velocity.setY(2);
+        //velocity.setY(2);
     }
 
     //--------------------------------------------PLAYER MOUSE EVENTS--------------------------------------------

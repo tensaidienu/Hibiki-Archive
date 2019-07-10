@@ -3,8 +3,11 @@
 
 #include <iostream>
 #include <map>
+#include <vector>
 
 #include "SDL2/SDL.h"
+
+const std::string defaultString = std::string("0");
 
 class TextureManager {
     private:
@@ -23,7 +26,8 @@ class TextureManager {
 	        return textureManagerInstance;
         }
         SDL_Surface* loadImgSurface(std::string fileName);
-        bool loadImg(std::string fileName, std::string id, SDL_Renderer* renderer, int transparency = 0);
+        bool loadImg(std::string fileName, std::string id, SDL_Renderer* renderer, std::string transparency = defaultString);
+        std::vector<std::string> SplitWithCharacters(const std::string& str, int splitLength);
         void draw(std::string id, int x, int y, int width, int height, SDL_Renderer* renderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
         void drawFrame(std::string id, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer* renderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
         void drawTile(std::string id, int margin, int spacing, int x, int y, int width, int height, int currentRow, int currentFrame, SDL_Renderer *renderer, SDL_RendererFlip flip = SDL_FLIP_NONE);
