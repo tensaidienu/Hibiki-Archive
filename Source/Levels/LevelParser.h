@@ -8,13 +8,19 @@
 #include "../GameController.h"
 #include "../GlobalVariables.h"
 
-#include "../Libs/tinyXml/tinyxml.h"
+#include "../Libs/tinyXml/tinyxml2.h"
+
+using namespace tinyxml2;
+
+#ifndef XMLCheckResult
+	#define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("Error: %i\n", a_eResult); return a_eResult; }
+#endif
 
 class LevelParser {
      private:        
-        void parseTilesets(TiXmlElement* root, TiXmlElement* tilesetRoot, std::vector<Tileset>* tilesets);
-        void parseTileLayer(TiXmlElement* tileElement, std::vector<Layer*> *layers, const std::vector<Tileset>* tilesets);
-        void parseObjectLayer(TiXmlElement* objectElement, std::vector<Layer*> *layers);
+        void parseTilesets(XMLElement* root, XMLElement* tilesetRoot, std::vector<Tileset>* tilesets);
+        void parseTileLayer(XMLElement* tileElement, std::vector<Layer*> *layers, const std::vector<Tileset>* tilesets);
+        void parseObjectLayer(XMLElement* objectElement, std::vector<Layer*> *layers);
         int tileSize;
         int width;
         int height;

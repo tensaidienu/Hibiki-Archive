@@ -12,9 +12,8 @@ set(GAME_OBJECTS GameObjects/SDLGameObject.cpp GameObjects/Player.cpp GameObject
 
 set(LEVELS Levels/Level.cpp Levels/TileLayer.cpp Levels/LevelParser.cpp  Levels/ObjectLayer.cpp)
 
-set(LIBS Libs/tinyXml/tinyxml.cpp Libs/tinyXml/tinystr.cpp Libs/tinyXml/tinyxmlerror.cpp 
-    Libs/tinyXml/tinyxmlparser.cpp
-    Libs/base64/base64.cpp)
+set(LIBS Libs/tinyXml/tinyxml2.cpp
+         Libs/base64/base64.cpp)
 
 set(MANAGERS Managers/TextureManager.cpp Managers/InputManager.cpp)
 

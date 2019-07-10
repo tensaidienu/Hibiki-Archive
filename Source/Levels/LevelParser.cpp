@@ -12,40 +12,43 @@
 Level* LevelParser::parseLevel(std::string levelFile) {
     //std::cout << "entering parseLevel\n";
     // create a TinyXML document and load the map XML
-    TiXmlDocument levelDocument;
+    XMLDocument levelDocument;
     levelDocument.LoadFile(levelFile.c_str());
     Level* level = new Level();
 
     // get the root node
-    TiXmlElement* root = levelDocument.RootElement();
+    XMLElement* root = levelDocument.RootElement();
 
     if(root->FirstChildElement() == nullptr){
         return nullptr;
     }
 
-    root->Attribute("tilewidth", &tileSize);
-    root->Attribute("width", &width);
-    root->Attribute("height", &height);
+    root->QueryIntAttribute("tilewidth", &tileSize);
+    root->QueryIntAttribute("width", &width);
+    root->QueryIntAttribute("height", &height);
+
+    
 
     // parse the tilesets
-    for(TiXmlElement* e = root->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
+    for(XMLElement* e = root->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
         if(e->Value() == std::string("tileset")) {
             parseTilesets(root, e, level->getTilesets());
+
         }
     }
 
     //parse the textures
     std::string tempTransparency = "0", tempPath = "0", tempName = "0";    
-    for (TiXmlElement* t = root->FirstChildElement(); t != NULL; t = t->NextSiblingElement()) {
+    for (XMLElement* t = root->FirstChildElement(); t != NULL; t = t->NextSiblingElement()) {
         if (t->Value() == std::string("group")) {
             t = t->FirstChildElement();
             if (t->Value() == std::string("objectgroup")) {
-                for (TiXmlElement* object = t->FirstChildElement(); object != NULL; object = object->NextSiblingElement()) {
+                for (XMLElement* object = t->FirstChildElement(); object != NULL; object = object->NextSiblingElement()) {
                     if (object->Value() == std::string("object")) {
                         tempName = object->Attribute("name");
                         object = object->FirstChildElement();
                         if (object->Value() == std::string("properties")) {
-                            for (TiXmlElement* property = object->FirstChildElement(); property != NULL; property = property->NextSiblingElement()) {
+                            for (XMLElement* property = object->FirstChildElement(); property != NULL; property = property->NextSiblingElement()) {
                                 if (property->Value() == std::string("property")) {
                                     if (property->Attribute("name") == std::string("Path")) {
                                         tempPath = property->Attribute("value");
@@ -64,7 +67,7 @@ Level* LevelParser::parseLevel(std::string levelFile) {
     }
 
     // parse any object layers
-    for(TiXmlElement* e = root->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
+    for(XMLElement* e = root->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
         if(e->Value() == std::string("layer")) {
             parseTileLayer(e, level->getLayers(), level->getTilesets());
         } else if(e->Value() == std::string("objectgroup")) {
@@ -76,16 +79,21 @@ Level* LevelParser::parseLevel(std::string levelFile) {
     return level;
 }
 
-void LevelParser::parseTilesets(TiXmlElement* root, TiXmlElement* tilesetRoot, std::vector<Tileset>* tilesets) {
+void LevelParser::parseTilesets(XMLElement* root, XMLElement* tilesetRoot, std::vector<Tileset>* tilesets) {
     //std::cout << "entering parseTilesets\n";
-    TiXmlElement* imageRoot;
+    XMLElement* imageRoot;
     // create a tileset object
     Tileset tileset;
-    tilesetRoot->Attribute("firstgid", &tileset.firstGridID);
     
-    TiXmlDocument levelDocument;
-    levelDocument.LoadFile(PATH_MAPS + tilesetRoot->Attribute("source"));
-    tilesetRoot = levelDocument.RootElement();    
+    tilesetRoot->QueryIntAttribute("firstgid", &tileset.firstGridID);
+
+    
+    
+    XMLDocument levelDocument;
+    //std::string kuso = PATH_MAPS + tilesetRoot->Attribute("source");
+    //const char *cstr = kuso.c_str();
+    levelDocument.LoadFile((PATH_MAPS + tilesetRoot->Attribute("source")).c_str());
+    tilesetRoot = levelDocument.RootElement();
     tileset.spacing = 0;
     tileset.margin = 0;
 
@@ -93,47 +101,52 @@ void LevelParser::parseTilesets(TiXmlElement* root, TiXmlElement* tilesetRoot, s
         return;
     }
 
-    std::string tempTransparency = "0";
-    tilesetRoot->FirstChildElement()->QueryStringAttribute("trans", &tempTransparency);
+    const char* kuso = "0";
+    tilesetRoot->FirstChildElement()->QueryStringAttribute("trans", &kuso);
+    std::string tempTransparency(kuso);    
     TheTextureManager::getInstance()->loadImg(PATH_TILESETS + tilesetRoot->FirstChildElement()->Attribute("source"), tilesetRoot->Attribute("name"), TheGame::getInstance()->getRenderer(), tempTransparency);
 
-    tilesetRoot->FirstChildElement()->Attribute("width", &tileset.width);
-    tilesetRoot->FirstChildElement()->Attribute("height", &tileset.height);    
-    tilesetRoot->Attribute("tilewidth", &tileset.tileWidth);
-    tilesetRoot->Attribute("tileheight", &tileset.tileHeight);
-    tilesetRoot->Attribute("spacing", &tileset.spacing);
-    tilesetRoot->Attribute("margin", &tileset.margin);
+    tilesetRoot->FirstChildElement()->QueryIntAttribute("width", &tileset.width);
+    tilesetRoot->FirstChildElement()->QueryIntAttribute("height", &tileset.height);    
+    tilesetRoot->QueryIntAttribute("tilewidth", &tileset.tileWidth);
+    tilesetRoot->QueryIntAttribute("tileheight", &tileset.tileHeight);
+    tilesetRoot->QueryIntAttribute("spacing", &tileset.spacing);
+    tilesetRoot->QueryIntAttribute("margin", &tileset.margin);
     tileset.name = tilesetRoot->Attribute("name");
     tileset.numColumns = tileset.width / (tileset.tileWidth + tileset.spacing);
     tilesets->push_back(tileset);
     //std::cout << "end parseTilesets\n";
 }
 
-void LevelParser::parseTileLayer(TiXmlElement* tileElement, std::vector<Layer*> *layers, const std::vector<Tileset>* tilesets) {
+void LevelParser::parseTileLayer(XMLElement* tileElement, std::vector<Layer*> *layers, const std::vector<Tileset>* tilesets) {
     if(tileElement->FirstChildElement() == nullptr){
         return;
     }
+
+    //std::cout << "XXXXXXXXXXXXXXXXXXXXXX" << std::endl;
+    //std::cout << "YYYYYYYYYYYYYYYYYYYYYYYYYY" << std::endl;
 
     TileLayer* tileLayer = new TileLayer(tileSize, *tilesets);
     // tile data
     std::vector<std::vector<int>> data;
     std::string decodedIDs;
-    TiXmlElement* dataNode;
+    XMLElement* dataNode;
 
     tileLayer->offsetX = 0;
     tileLayer->offsetY = 0;
-    tileElement->Attribute("offsetx", &tileLayer->offsetX);
-    tileElement->Attribute("offsety", &tileLayer->offsetY);
+    tileElement->QueryIntAttribute("offsetx", &tileLayer->offsetX);
+    tileElement->QueryIntAttribute("offsety", &tileLayer->offsetY);
 
-    for(TiXmlElement* e = tileElement->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
+    for(XMLElement* e = tileElement->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
         if(e->Value() == std::string("data")) {
             dataNode = e;
         }
     }
-    for(TiXmlNode* e = dataNode->FirstChild(); e != NULL; e = e->NextSibling()) {
-        TiXmlText* text = e->ToText();
+    //NODE
+    for(XMLNode* e = dataNode->FirstChild(); e != NULL; e = e->NextSibling()) {
+        XMLText* text = e->ToText();
         std::string t = text->Value();
-        decodedIDs = base64_decode(t);
+        decodedIDs = base64_decode(TheGlobalVariables::trim(t));
     }
     // uncompress zlib compression
     uLongf numGids = width * height * sizeof(int);
@@ -152,7 +165,7 @@ void LevelParser::parseTileLayer(TiXmlElement* tileElement, std::vector<Layer*> 
     layers->push_back(tileLayer);
 }
 
-void LevelParser::parseObjectLayer(TiXmlElement* objectElement, std::vector<Layer*> *layers) {
+void LevelParser::parseObjectLayer(XMLElement* objectElement, std::vector<Layer*> *layers) {
     if(objectElement->FirstChildElement() == nullptr){
         return;
     }
@@ -162,29 +175,29 @@ void LevelParser::parseObjectLayer(TiXmlElement* objectElement, std::vector<Laye
 	std::string textureID;
 
 	if (objectElement->FirstChildElement()->Value() == std::string("properties")) {		
-        for (TiXmlElement* properties = objectElement->FirstChildElement()->FirstChildElement(); properties != NULL; properties = properties->NextSiblingElement()) {
+        for (XMLElement* properties = objectElement->FirstChildElement()->FirstChildElement(); properties != NULL; properties = properties->NextSiblingElement()) {
 			if (properties->Value() == std::string("property")) {                
 				if (properties->Attribute("name") == std::string("numFrames")) {
-				    properties->Attribute("value", &numFrames);
+				    properties->QueryIntAttribute("value", &numFrames);
 				} else if (properties->Attribute("name") == std::string("textureHeight")) {
-					properties->Attribute("value", &height);
+					properties->QueryIntAttribute("value", &height);
 				} else if (properties->Attribute("name") == std::string("textureID")) {
 					textureID = properties->Attribute("value");
 				} else if (properties->Attribute("name") == std::string("textureWidth")) {
-					properties->Attribute("value", &width);
+					properties->QueryIntAttribute("value", &width);
 				} else if (properties->Attribute("name") == std::string("callbackID")) {
-					properties->Attribute("value", &callbackID);
+					properties->QueryIntAttribute("value", &callbackID);
 				} else if (properties->Attribute("name") == std::string("animSpeed")) {
-					properties->Attribute("value", &animSpeed);
+					properties->QueryIntAttribute("value", &animSpeed);
 				}
 			}
 		}
 	}
 
-    for (TiXmlElement* e = objectElement->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
+    for (XMLElement* e = objectElement->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
 		if (e->Value() == std::string("object")) {
-			e->Attribute("x", &x);
-			e->Attribute("y", &y);
+			e->QueryIntAttribute("x", &x);
+			e->QueryIntAttribute("y", &y);
 			GameObject* gameObject = TheGameObjectFactory::getInstance()->create(e->Attribute("type"));
 			gameObject->load(new LoaderParams(x, y, width, height, textureID, numFrames, callbackID, animSpeed));
 			objectLayer->getGameObjects()->push_back(gameObject);
