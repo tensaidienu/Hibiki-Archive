@@ -5,11 +5,11 @@
 
 #include "SDL2/SDL.h"
 
-#include "SDLGameObject.h"
+#include "DynamicGameObject.h"
 #include "../Factories/GameObjectFactory.h"
 #include "../LoaderParams.h"
 
-class Enemy : public SDLGameObject {
+class Enemy : public DynamicGameObject {
     public:
         Enemy();
         ~Enemy(){};

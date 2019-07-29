@@ -16,7 +16,7 @@ void GameStateMachine::initialState() {
     gameState->onEnter();
 }
 
-void GameStateMachine::changeState(Hibiki_GameState type) {
+void GameStateMachine::changeState(HibikiGameState type) {
     switch (type) {
         case HIBIKI_MAIN_MENU:
             wait = true;
@@ -37,7 +37,7 @@ void GameStateMachine::changeState(Hibiki_GameState type) {
             wait = false;
             break;
         case HIBIKI_PAUSE:
-            std::cout << "Pause";
+            std::cout << "Pause" << std::endl;
             tempGameState = gameState;
             gameState = new PauseState();
             gameState->onEnter();

@@ -3,22 +3,24 @@
 
 using namespace std;
 
-Player::Player() : SDLGameObject(){ }
+Player::Player() : DynamicGameObject(){ }
 
 void Player::load(const LoaderParams *params) {
-    SDLGameObject::load(params);
+    DynamicGameObject::load(params);
 }
 
 void Player::draw() {
-    SDLGameObject::draw();
+    DynamicGameObject::draw();
 }
 
-void Player::update() {
+void Player::update() {    
+    currentFrame = int(((SDL_GetTicks() / 100) % numFrames));
+    velocity += acceleration;
+    position += velocity;
+    collider.getSize().setX(position.getX());
+    collider.getSize().setY(position.getY());
     velocity.setX(0);
     velocity.setY(0);
-    handleInput();
-    currentFrame = int(((SDL_GetTicks() / 100) % 4));
-    SDLGameObject::update();
 }
 
 void Player::clean() {
@@ -27,7 +29,7 @@ void Player::clean() {
 
 void Player::handleInput() {
     //--------------------------------------------PLAYER KEYBOARD EVENTS--------------------------------------------
-    if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_RIGHT)) {
+    /*if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_RIGHT)) {
         velocity.setX(2);
         direction = 1;
     }
@@ -36,11 +38,11 @@ void Player::handleInput() {
         direction = 2;
     }
     if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_UP)) {
-        //velocity.setY(-2);
+        velocity.setY(-2);
     }
     if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_DOWN)) {
-        //velocity.setY(2);
-    }
+        velocity.setY(2);
+    }*/
 
     //--------------------------------------------PLAYER MOUSE EVENTS--------------------------------------------
     //Move player using mouse position

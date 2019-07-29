@@ -13,6 +13,7 @@
 const std::string MainMenuState::menuID = "MENU";
 
 void MainMenuState::update() {
+    SDL_SetRenderDrawColor(TheGame::getInstance()->getRenderer(), 0, 0, 0, 0);
     for(int x = 0; x < gameObjects.size(); x++) {
         gameObjects[x]->update();
     }
@@ -27,10 +28,12 @@ void MainMenuState::render() {
 bool MainMenuState::onEnter() {
     StateParser stateParser;
     stateParser.parseState(PATH_GUI + "Menu.xml", menuID, &gameObjects, &textureIDList);
-    callbacks.push_back(menuToPlay);
-    callbacks.push_back(exitFromMenu);
+    
+    functionCallbacks.emplace("menuToPlay", menuToPlay);
+    functionCallbacks.emplace("exitFromMenu", exitFromMenu);
+    
     // set the callbacks for menu items
-    setCallbacks(callbacks);
+    setCallbacks();
     return true;
 }
 
@@ -61,13 +64,13 @@ void MainMenuState::exitFromMenu() {
     TheGame::getInstance()->clean();
 }
 
-void MainMenuState::setCallbacks(const std::vector<Callback>& callbacks) {
+void MainMenuState::setCallbacks() {
     // go through the game objects
     for(int i = 0; i < gameObjects.size(); i++) {
         // if they are of type MenuButton then assign a callback based on the id passed in from the file
         if(dynamic_cast<MenuButton*>(gameObjects[i])) {            
             MenuButton* button = dynamic_cast<MenuButton*>(gameObjects[i]);
-            button->setCallback(callbacks[button->getCallbackID()]);
+            button->setFuncCallback(functionCallbacks[button->getCallbackID()]);
         }
     }
 }

@@ -16,7 +16,7 @@ class GameStateMachine {
         GameStateMachine();
         ~GameStateMachine();
         void initialState();
-        void changeState(Hibiki_GameState type);
+        void changeState(HibikiGameState type);
         void pauseToMain();
         void resumePlay();
         void update();

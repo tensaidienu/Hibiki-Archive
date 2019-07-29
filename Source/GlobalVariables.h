@@ -4,13 +4,22 @@
 #include <iostream>
 #include <string>
 #include <algorithm>
+#include <map>
 
 typedef enum {
     HIBIKI_MAIN_MENU = 1,
     HIBIKI_PLAY,
     HIBIKI_PAUSE,
     HIBIKI_GAME_OVER
-} Hibiki_GameState;
+} HibikiGameState;
+
+typedef enum {
+    COLLISION_BLOCK = 1,
+    COLLISION_TRIGGER,
+    COLLISION_BLOCK_AND_TRIGGER,
+    CLICK_TRIGGER,
+    COLLISION_BLOCK_CLICK_TRIGGER
+} HibikiCollisionType;
 
 const std::string WHITESPACE = " \n\r\t\f\v";
 static const std::string PATH_ASSETS = "../Assets/";
@@ -21,16 +30,25 @@ static const std::string PATH_CHARACTERS = "../Assets/Characters/";
 static const std::string PATH_GUI = "../Assets/GUI/";
 static const std::string PATH_MENU = "../Assets/GUI/Menu/";
 
+static std::map<std::string, HibikiCollisionType> hibikiCollisionTypeMap;
+
 class GlobalVariables {
     private:
-        GlobalVariables(){}
+        GlobalVariables(){
+            hibikiCollisionTypeMap["COLLISION_BLOCK"] = COLLISION_BLOCK;
+            hibikiCollisionTypeMap["COLLISION_TRIGGER"] = COLLISION_TRIGGER;
+            hibikiCollisionTypeMap["COLLISION_BLOCK_AND_TRIGGER"] = COLLISION_BLOCK_AND_TRIGGER;
+            hibikiCollisionTypeMap["CLICK_TRIGGER"] = CLICK_TRIGGER;
+            hibikiCollisionTypeMap["COLLISION_BLOCK_CLICK_TRIGGER"] = COLLISION_BLOCK_CLICK_TRIGGER;
+         }
         ~GlobalVariables(){}
 
         static GlobalVariables* globalVariablesInstance;
+        
     public:
         static GlobalVariables* getInstance() {
             if(globalVariablesInstance == 0) {
-                globalVariablesInstance = new GlobalVariables();
+                globalVariablesInstance = new GlobalVariables();                               
                 return globalVariablesInstance;
             }
             return globalVariablesInstance;
@@ -48,6 +66,10 @@ class GlobalVariables {
 
         static std::string trim(const std::string& s) {
 	        return rtrim(ltrim(s));
+        }
+        
+        static HibikiCollisionType getCollisionTypeByString(std::string type) {
+            return hibikiCollisionTypeMap[type];
         }
 };
 

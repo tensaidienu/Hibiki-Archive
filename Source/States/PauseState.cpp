@@ -38,10 +38,14 @@ void PauseState::render() {
 
 bool PauseState::onEnter() {
     StateParser stateParser;
-    stateParser.parseState("../Assets/test.xml", pauseID, &gameObjects, &textureIDList);
-    callbacks.push_back(pauseToMain);
-    callbacks.push_back(resumePlay);
-    setCallbacks(callbacks);
+    std::cout << PATH_GUI+"Pause.xml" << std::endl;
+    stateParser.parseState(PATH_GUI + "Pause.xml", pauseID, &gameObjects, &textureIDList);
+
+    functionCallbacks.emplace("pauseToMain", pauseToMain);
+    functionCallbacks.emplace("resumePlay", resumePlay);
+    
+    // set the callbacks for menu items
+    setCallbacks();
     return true;
 }
 
@@ -59,13 +63,13 @@ bool PauseState::onExit() {
     return true;
 }
 
-void PauseState::setCallbacks(const std::vector<Callback>& callbacks) {
+void PauseState::setCallbacks() {
     // go through the game objects
     for(int i = 0; i < gameObjects.size(); i++) {
         // if they are of type MenuButton then assign a callback based on the id passed in from the file
         if(dynamic_cast<MenuButton*>(gameObjects[i])) {            
             MenuButton* button = dynamic_cast<MenuButton*>(gameObjects[i]);
-            button->setCallback(callbacks[button->getCallbackID()]);
+            button->setFuncCallback(functionCallbacks[button->getCallbackID()]);
         }
     }
 }

@@ -12,15 +12,20 @@
 
 using namespace tinyxml2;
 
-#ifndef XMLCheckResult
+/*#ifndef XMLCheckResult
 	#define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("Error: %i\n", a_eResult); return a_eResult; }
-#endif
+#endif*/
 
 class LevelParser {
      private:        
         void parseTilesets(XMLElement* root, XMLElement* tilesetRoot, std::vector<Tileset>* tilesets);
         void parseTileLayer(XMLElement* tileElement, std::vector<Layer*> *layers, const std::vector<Tileset>* tilesets);
-        void parseObjectLayer(XMLElement* objectElement, std::vector<Layer*> *layers);
+        void parseObjects(XMLElement* objectElement, std::vector<Layer*> *layers, std::string name, Level* level);
+        
+        void parseEnemies(XMLElement* objectElement, std::vector<Layer*> *layers, Level* level);
+        void parseStaticGameObjects(XMLElement* objectElement, std::vector<Layer*> *layers, Level* level);
+        void parsePlayers(XMLElement* objectElement, std::vector<Layer*> *layers, Level* level);
+        
         int tileSize;
         int width;
         int height;

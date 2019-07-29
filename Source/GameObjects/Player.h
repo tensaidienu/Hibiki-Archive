@@ -5,11 +5,10 @@
 
 #include "SDL2/SDL.h"
 
-#include "SDLGameObject.h"
+#include "DynamicGameObject.h"
 #include "../Factories/GameObjectFactory.h"
-#include "../LoaderParams.h"
 
-class Player : public SDLGameObject {
+class Player : public DynamicGameObject {
     private:
         void handleInput();
     public:

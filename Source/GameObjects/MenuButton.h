@@ -1,20 +1,19 @@
 #ifndef __MenuButton_h__
 #define __MenuButton_h__
 
-#include "SDLGameObject.h"
+#include <functional>
+
+#include "DynamicGameObject.h"
 #include "../Factories/GameObjectFactory.h"
 #include "../LoaderParams.h"
 
-class MenuButton : public SDLGameObject {
+class MenuButton : public DynamicGameObject {
     private:
         enum button_state {
 		    MOUSE_OUT = 0,
 		    MOUSE_OVER = 1,
 		    CLICKED = 2
 	    };
-	    void (*callback) ();
-        //void (*onClickEvent) ();
-	    int callbackID;
         bool released;
     public:
         MenuButton();
@@ -23,8 +22,8 @@ class MenuButton : public SDLGameObject {
         virtual void draw();
         virtual void update();
         virtual void clean();
-	    void setCallback(void(*callback)()) { this->callback = callback; }
-	    int getCallbackID() { return this->callbackID; }
+        void setFuncCallback(std::function<void()> func);
+	    std::string getCallbackID() { return this->callbackID; }
 };
 
 class MenuButtonCreator : public BaseCreator {

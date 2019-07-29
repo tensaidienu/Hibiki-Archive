@@ -10,6 +10,7 @@
 #include "GameObjects/Enemy.h"
 #include "GameObjects/MenuButton.h"
 #include "GameObjects/AnimatedGraphic.h"
+#include "GameObjects/StaticGameObject.h"
 
 using namespace std;
 
@@ -58,9 +59,12 @@ bool GameController::init(const char* title, int xpos, int ypos, int width, int 
         return false;
     }
 
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+
     TheGameObjectFactory::getInstance()->registerType("MenuButton", new MenuButtonCreator());	
 	TheGameObjectFactory::getInstance()->registerType("Player", new PlayerCreator());
     TheGameObjectFactory::getInstance()->registerType("Enemy", new EnemyCreator());
+    TheGameObjectFactory::getInstance()->registerType("StaticGameObject", new StaticGameObjectCreator());
 	TheGameObjectFactory::getInstance()->registerType("AnimatedGraphic", new AnimatedGraphicCreator());
     
 	gameStateMachine = new GameStateMachine();

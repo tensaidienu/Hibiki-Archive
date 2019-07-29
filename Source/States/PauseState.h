@@ -14,13 +14,14 @@ class PauseState : public MenuState {
         
         static const std::string pauseID;
         std::vector<GameObject*> gameObjects;
+
+        virtual void setCallbacks();
     public:
         virtual void update();
         virtual void render();
         virtual bool onEnter();
         virtual bool onExit();
-        virtual std::string getStateID() const { return pauseID; }
-        virtual void setCallbacks(const std::vector<Callback> &callbacks);
+        virtual std::string getStateID() const { return pauseID; }        
 };
 
 #endif

@@ -12,9 +12,9 @@ class MainMenuState : public MenuState {
         static void exitFromMenu();
 
         static const std::string menuID;
-        std::vector<GameObject*> gameObjects;  
+        std::vector<GameObject*> gameObjects;
 
-        virtual void setCallbacks(const std::vector<Callback>& callbacks);
+        virtual void setCallbacks();
     public:
         virtual void update();
         virtual void render();

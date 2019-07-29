@@ -1,13 +1,15 @@
 #ifndef __MenuState_h__
 #define __MenuState_h__
 
+#include <functional>
+#include <map>
+#include <vector>
+
 #include "GameState.h"
 
 class MenuState : public GameState {
     protected:
-	    typedef void(*Callback)();
-	    virtual void setCallbacks(const std::vector<Callback>& callbacks) = 0;
-	    std::vector<Callback> callbacks;
+		std::map<std::string, std::function<void()>> functionCallbacks;
 };
 
 #endif

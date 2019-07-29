@@ -1,16 +1,16 @@
 #include "MenuButton.h"
 #include "../Managers/InputManager.h"
 
-MenuButton::MenuButton() : SDLGameObject(){ }
+MenuButton::MenuButton() : DynamicGameObject(){ }
 
 void MenuButton::load(const LoaderParams* params) {
-	SDLGameObject::load(params);
+	DynamicGameObject::load(params);
 	this->callbackID = params->getCallbackID();
 	currentFrame = MOUSE_OUT;
 }
 
 void MenuButton::draw() {
-    SDLGameObject::draw(); // use the base class drawing
+    DynamicGameObject::draw(); // use the base class drawing
 }
 
 void MenuButton::update() {    
@@ -22,7 +22,8 @@ void MenuButton::update() {
         currentFrame = MOUSE_OVER;
         if(TheInputManager::getInstance()->getMouseButtonState(LEFT) && released) {
             currentFrame = CLICKED;
-            callback(); // call our callback function
+            functionCallback();
+            //callback(); // call our callback function
             released = false;
         }
     } else {
@@ -31,8 +32,12 @@ void MenuButton::update() {
     }
 }
 
+void MenuButton::setFuncCallback(std::function<void()> func){
+    functionCallback = func;
+}
+
 void MenuButton::clean() {
-    SDLGameObject::clean();
+    DynamicGameObject::clean();
 }
 
 MenuButton::~MenuButton() {

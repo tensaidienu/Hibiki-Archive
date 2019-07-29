@@ -1,5 +1,4 @@
 cmake_minimum_required (VERSION 3.7)
-#set(PROJECT_NAME="Simple2D")
 
 project("HibikiOrigins")
 
@@ -7,10 +6,11 @@ set(MAIN Main.cpp GameController.cpp GlobalVariables.cpp)
 
 set(FACTORIES Factories/GameObjectFactory.cpp)
 
-set(GAME_OBJECTS GameObjects/SDLGameObject.cpp GameObjects/Player.cpp GameObjects/Enemy.cpp 
-    GameObjects/MenuButton.cpp GameObjects/AnimatedGraphic.cpp)
+set(GAME_OBJECTS GameObjects/DynamicGameObject.cpp GameObjects/Player.cpp GameObjects/Enemy.cpp
+    GameObjects/MenuButton.cpp GameObjects/AnimatedGraphic.cpp GameObjects/CollisionGameObject.cpp
+    GameObjects/Collider.cpp GameObjects/StaticGameObject.cpp)
 
-set(LEVELS Levels/Level.cpp Levels/TileLayer.cpp Levels/LevelParser.cpp  Levels/ObjectLayer.cpp)
+set(LEVELS Levels/Level.cpp Levels/TileLayer.cpp Levels/LevelParser.cpp)
 
 set(LIBS Libs/tinyXml/tinyxml2.cpp
          Libs/base64/base64.cpp)

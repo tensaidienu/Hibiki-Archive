@@ -5,16 +5,14 @@
 
 #include "GameState.h"
 #include "../GameObjects/GameObject.h"
-#include "../GameObjects/SDLGameObject.h"
+#include "../GameObjects/DynamicGameObject.h"
+#include "../GameObjects/StaticGameObject.h"
 #include "../Levels/Level.h"
 
 class PlayState : public GameState {
     private:
-        bool checkCollision(SDLGameObject* p1, SDLGameObject* p2);
-
         static const std::string playID;
         Level* level;
-        std::vector<GameObject*> gameObjects;
     public:
         PlayState();
         ~PlayState();

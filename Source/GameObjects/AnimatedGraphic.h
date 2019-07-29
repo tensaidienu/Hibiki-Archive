@@ -1,11 +1,11 @@
 #ifndef __AnimatedGraphic_h__
 #define __AnimatedGraphic_h__
 
-#include "SDLGameObject.h"
+#include "DynamicGameObject.h"
 #include "../Factories/GameObjectFactory.h"
 #include "../LoaderParams.h"
 
-class AnimatedGraphic : public SDLGameObject {
+class AnimatedGraphic : public DynamicGameObject {
     private:
 	    int animSpeed;
     public:

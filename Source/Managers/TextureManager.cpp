@@ -99,6 +99,11 @@ void TextureManager::drawTile(std::string id, int margin, int spacing, int x, in
     SDL_RenderCopyEx(renderer, textureMap[id], &srcRect, &destRect, 0, 0, flip);
 }
 
+void TextureManager::drawRect(SDL_Renderer *renderer, SDL_Rect &rect) {
+    SDL_RenderDrawRect(renderer, &rect);
+    //SDL_RenderFillRect(renderer, &rect);
+}
+
 void TextureManager::clearFromTextureMap(std::string id) {
     textureMap.erase(id);
 }

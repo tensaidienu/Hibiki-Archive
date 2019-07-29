@@ -1,12 +1,12 @@
-#include "SDLGameObject.h"
+#include "DynamicGameObject.h"
 #include "../GameController.h"
 #include "../Managers/TextureManager.h"
 
 using namespace std;
 
-SDLGameObject::SDLGameObject() : GameObject(){}
+DynamicGameObject::DynamicGameObject() : CollisionGameObject(){ }
 
-void SDLGameObject::load(const LoaderParams* params) {
+void DynamicGameObject::load(const LoaderParams* params) {
     position = Vector2D(params->getX(), params->getY());
     velocity = Vector2D(0, 0);
     acceleration = Vector2D(0, 0);
@@ -16,9 +16,10 @@ void SDLGameObject::load(const LoaderParams* params) {
     currentRow = 1;
     currentFrame = 0;
     numFrames = params->getNumFrames();
+    collider.load(params->getX(), params->getY(), params->getType());
 }
 
-void SDLGameObject::draw() {
+void DynamicGameObject::draw() {
     switch (direction) {
     case 1:
         TheTextureManager::getInstance()->drawFrame(this->textureID, (int) position.getX(), (int) position.getY(), this->width, this->height, this->currentRow, this->currentFrame, TheGame::getInstance()->getRenderer());
@@ -31,6 +32,15 @@ void SDLGameObject::draw() {
         TheTextureManager::getInstance()->drawFrame(this->textureID, (int) position.getX(), (int) position.getY(), this->width, this->height, this->currentRow, this->currentFrame, TheGame::getInstance()->getRenderer());
         break;
     }
+
+    SDL_Rect rect;
+    rect.x = collider.getSize().getX();
+    rect.y = collider.getSize().getY();
+    rect.w = width;
+    rect.h = height;
+
+    //SDL_SetRenderDrawColor(TheGame::getInstance()->getRenderer(), 0, 0, 255, 255);
+    TheTextureManager::getInstance()->drawRect(TheGame::getInstance()->getRenderer(), rect);
     ///TextureManager::getInstance()->drawFrame(this->textureID, (int) position.getX(), (int) position.getY(), this->width, this->height, this->currentRow, this->currentFrame, TheGame::getInstance()->getRenderer());
     /*if(velocity.getX() > 0) {
         TextureManager::getInstance()->drawFrame(textureID,
@@ -45,11 +55,13 @@ void SDLGameObject::draw() {
     }*/
 }
 
-void SDLGameObject::update() {
-    velocity += acceleration;
-    position += velocity;
+void DynamicGameObject::update() {
+    //velocity += acceleration;
+    //position += velocity;
+    //collider.getSize().setX(position.getX());
+    //collider.getSize().setY(position.getY());
 }
 
-void SDLGameObject::clean() {
+void DynamicGameObject::clean() {
     
 }

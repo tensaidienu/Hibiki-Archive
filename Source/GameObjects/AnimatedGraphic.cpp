@@ -2,15 +2,15 @@
 
 #include "AnimatedGraphic.h"
 
-AnimatedGraphic::AnimatedGraphic() : SDLGameObject(){ }
+AnimatedGraphic::AnimatedGraphic() : DynamicGameObject(){ }
 
 void AnimatedGraphic::load(const LoaderParams *params) {
-    SDLGameObject::load(params);
+    DynamicGameObject::load(params);
 	animSpeed = params->getAnimSpeed();
 }
 
 void AnimatedGraphic::draw() {
-	SDLGameObject::draw();
+	DynamicGameObject::draw();
 }
 
 void AnimatedGraphic::update() {

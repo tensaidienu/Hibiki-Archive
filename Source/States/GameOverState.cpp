@@ -27,10 +27,13 @@ void GameOverState::render() {
 bool GameOverState::onEnter() {
 	StateParser stateParser;
 	stateParser.parseState("../Assets/test.xml", gameOverID, &gameObjects, &textureIDList);
-	callbacks.push_back(gameOverToMain);
-	callbacks.push_back(restartPlay);
-	setCallbacks(callbacks);
-	return true;
+
+	functionCallbacks.emplace("gameOverToMain", gameOverToMain);
+    functionCallbacks.emplace("restartPlay", restartPlay);
+    
+	// set the callbacks for menu items
+    setCallbacks();
+    return true;
 }
 
 bool GameOverState::onExit() {
@@ -54,13 +57,13 @@ void GameOverState::restartPlay() {
 	TheGame::getInstance()->getStateMachine()->changeState(HIBIKI_PLAY);
 }
 
-void GameOverState::setCallbacks(const std::vector<Callback>& callbacks) {
+void GameOverState::setCallbacks() {
     // go through the game objects
     for(int i = 0; i < gameObjects.size(); i++) {
         // if they are of type MenuButton then assign a callback based on the id passed in from the file
         if(dynamic_cast<MenuButton*>(gameObjects[i])) {
             MenuButton* button = dynamic_cast<MenuButton*>(gameObjects[i]);
-            button->setCallback(callbacks[button->getCallbackID()]);
+            button->setFuncCallback(functionCallbacks[button->getCallbackID()]);
         }
     }
 }

@@ -61,20 +61,21 @@ void StateParser::parseTextures(XMLElement* stateRoot, std::vector<std::string> 
 
 void StateParser::parseObjects(XMLElement* stateRoot, std::vector<GameObject*> *objects) {
 	for (XMLElement* e = stateRoot->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
-		int x, y, width, height, numFrames, callbackID, animSpeed = 0;
-		std::string textureID;
+		int x, y, width, height, numFrames, animSpeed = 0;
+		std::string textureID, callbackID;
 		
 		e->QueryIntAttribute("x", &x);
 		e->QueryIntAttribute("y", &y);
 		e->QueryIntAttribute("width", &width);
 		e->QueryIntAttribute("height", &height);
 		e->QueryIntAttribute("numFrames", &numFrames);
-		e->QueryIntAttribute("callbackID", &callbackID);
+		//e->QueryIntAttribute("callbackID", &callbackID);
+		callbackID = e->Attribute("callbackID");
 		e->QueryIntAttribute("animSpeed", &animSpeed);
 		textureID = e->Attribute("textureID");
 
 		GameObject* gameObject = TheGameObjectFactory::getInstance()->create(e->Attribute("type"));
-		gameObject->load(new LoaderParams(x, y, width, height, textureID, numFrames, callbackID, animSpeed));
+		gameObject->load(new LoaderParams(x, y, width, height, textureID, callbackID, numFrames, animSpeed));
 		objects->push_back(gameObject);
 	}
 }

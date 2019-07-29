@@ -1,0 +1,57 @@
+Initial functionalities 0.0.1-0.1:
+-------------------------------------
+    Folder Strucuture of the modules.
+
+    Factories/    -> # All Factories (Used to create GameObjects)
+    GameObjects/  -> # All GameObjects
+    Levels/       -> # All Levels (All levels)
+    Libs/         -> # All Libs (All Libs used in the engine)
+    Managers/     -> # All Managers
+    States/       -> # All GameObjects
+    ../Build/     -> # Build Folder
+    ../Assets/    -> # Assets Folder
+
+    Main.cpp:
+        * Basic structure of the main file
+    GameController.cpp
+        * GameController the main structure of the engine, is responsible to initialize and call the others classes and functions
+    GlobalVariables.cpp
+        * All GlobalVariables contains all variables needed in others classes
+    Vector2D.h
+        * Vector2D is used to store a two-dimensional direction vector having floating-point components x and y.
+    LoaderParams.h
+        * LoaderParams is simply a class that takes values into its constructor and sets them as member variables that can then be accessed to set the initial values of an object.
+        While it may just seem that we are moving the parameters from the load function to somewhere else, it is a lot easier to just create a new LoaderParams class than to track down and alter the load function of all of our objects.
+
+Update:
+    *Removed ObjectLayer
+
+    *Now the GameObjects are inside the Level and each Level will have their own GameObjects
+
+    *Added a new type of GameObject "StaticGameObject"
+
+    *Added Collider class that will be used to help verify all collisions
+
+    *Added a new GameObject "CollisionGameObjects", that class will be the base class to all GameObjects that need collision events
+
+    *Change SDLGameObject name to DynamicGameObject
+
+    *Added block collision method to StaticGameObject, to do that was crate 4 methods 'checkBlockCollision' one for each direction
+
+    *Change the callback to std::function
+
+    *Added callback (now std::function) to StaticGameObjects and DynamicGameObjects
+
+    *Added Pause.xml
+    
+    *All MenuObjects now use the std::function, now is possible to define a callback to a function in xml using the method name in string.
+
+    *Added Collision Trigger to StaticGameObjects and DynamicGameObjects, the trigger function needs to have the same name of the gameObjectId and TextureId
+
+    *Added Click event on GameObjects
+
+    *Added Collision and Click events on StaticObject
+
+    *Added basic Enemy Collision
+
+    *Added basic gravity
