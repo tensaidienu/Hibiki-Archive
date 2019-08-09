@@ -1,3 +1,20 @@
+Initial functionalities 0.0.1-0.2:
+-------------------------------------
+    Folder Strucuture of the modules.
+
+    Factories/    -> # All Factories (Used to create GameObjects)
+    GameObjects/  -> # All GameObjects
+    Levels/       -> # All Levels (All levels)
+    Libs/         -> # All Libs (All Libs used in the engine)
+    Managers/     -> # All Managers
+    States/       -> # All GameObjects
+    ../Build/     -> # Build Folder
+    ../WebBuild/     -> # Web Build Folder
+    ../Assets/    -> # Assets Folder
+
+Update:
+    *Created WebMain to make the web build
+
 Initial functionalities 0.0.1-0.1:
 -------------------------------------
     Folder Strucuture of the modules.

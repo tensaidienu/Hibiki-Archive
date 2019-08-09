@@ -195,6 +195,8 @@ void Level::staticsGameObjectsUpdate() {
                         released = true;
                     }
                     break;
+                default:
+                    break;
             }
         }
     }

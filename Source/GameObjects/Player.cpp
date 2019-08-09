@@ -13,7 +13,7 @@ void Player::draw() {
     DynamicGameObject::draw();
 }
 
-void Player::update() {    
+void Player::update() {
     currentFrame = int(((SDL_GetTicks() / 100) % numFrames));
     velocity += acceleration;
     position += velocity;

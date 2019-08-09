@@ -12,6 +12,8 @@
 
 const std::string MainMenuState::menuID = "MENU";
 
+MainMenuState::MainMenuState() { }
+
 void MainMenuState::update() {
     SDL_SetRenderDrawColor(TheGame::getInstance()->getRenderer(), 0, 0, 0, 0);
     for(int x = 0; x < gameObjects.size(); x++) {
@@ -72,5 +74,11 @@ void MainMenuState::setCallbacks() {
             MenuButton* button = dynamic_cast<MenuButton*>(gameObjects[i]);
             button->setFuncCallback(functionCallbacks[button->getCallbackID()]);
         }
+    }
+}
+
+MainMenuState::~MainMenuState() {
+    for (auto it : gameObjects) {
+        delete it;
     }
 }

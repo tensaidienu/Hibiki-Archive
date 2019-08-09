@@ -97,7 +97,7 @@ void GameController::handleEvents() {
 
 void GameController::update() {
     gameStateMachine->update();
-    //SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, std::to_string(currentFrame).c_str());  
+    //SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, std::to_string(currentFrame).c_str());
 }
 
 void GameController::render() {

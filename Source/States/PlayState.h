@@ -20,7 +20,7 @@ class PlayState : public GameState {
         virtual void render();
         virtual bool onEnter();
         virtual bool onExit();
-        virtual std::string getStateID() const { return playID; };        
+        virtual std::string getStateID() const { return playID; };
 };
 
 #endif

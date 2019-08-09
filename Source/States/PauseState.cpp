@@ -13,6 +13,8 @@
 
 const std::string PauseState::pauseID = "PAUSE";
 
+PauseState::PauseState() { }
+
 void PauseState::pauseToMain() {
     TheGame::getInstance()->getStateMachine()->pauseToMain();
     //TheGame::getInstance()->getStateMachine()->popState();
@@ -71,5 +73,11 @@ void PauseState::setCallbacks() {
             MenuButton* button = dynamic_cast<MenuButton*>(gameObjects[i]);
             button->setFuncCallback(functionCallbacks[button->getCallbackID()]);
         }
+    }
+}
+
+PauseState::~PauseState() {
+    for (auto it : gameObjects) {
+        delete it;
     }
 }

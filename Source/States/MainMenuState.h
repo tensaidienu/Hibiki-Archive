@@ -16,6 +16,8 @@ class MainMenuState : public MenuState {
 
         virtual void setCallbacks();
     public:
+        MainMenuState();
+        ~MainMenuState();
         virtual void update();
         virtual void render();
         virtual bool onEnter();
