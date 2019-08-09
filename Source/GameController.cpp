@@ -28,7 +28,7 @@ GameController::~GameController() {
 
 bool GameController::init(const char* title, int xpos, int ypos, int width, int height, int flags) {
     //flags = SDL_WINDOW_RESIZABLE;
-    flags = SDL_WINDOW_SHOWN;
+    //flags = SDL_WINDOW_SHOWN;
 	gameWidth = width;
 	gameHeight = height;
 

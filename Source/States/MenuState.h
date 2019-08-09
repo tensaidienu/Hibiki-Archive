@@ -9,7 +9,7 @@
 
 class MenuState : public GameState {
     protected:
-		std::map<std::string, std::function<void()>> functionCallbacks;
+		std::map<std::string, std::function<void()> > functionCallbacks;
 };
 
 #endif

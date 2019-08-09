@@ -49,7 +49,7 @@ class Level {
         std::vector<GameObject*> players;
         std::vector<GameObject*> enemies;
         std::vector<GameObject*> staticsGameObjects;
-        std::map<std::string, std::function<void()>> functionCallbacks;
+        std::map<std::string, std::function<void()> > functionCallbacks;
 
         std::vector<Tileset> tilesets;
         std::vector<Layer*> layers;

@@ -23,8 +23,8 @@ class InputManager {
         static InputManager* InputManagerInstance;
 
         std::vector<SDL_Joystick*> joysticks;
-        std::vector<std::pair<Vector2D*, Vector2D*>> joysticksValues;
-        std::vector<std::vector<bool>> buttonStates;
+        std::vector<std::pair<Vector2D*, Vector2D*> > joysticksValues;
+        std::vector<std::vector<bool> > buttonStates;
         bool joysticksInitialised;
 
         std::vector<bool> mouseButtonStates;

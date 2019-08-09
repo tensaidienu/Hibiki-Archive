@@ -25,7 +25,6 @@ NEWS               - Important modifications between the releases.
 README             - This file.
 THANKS             - Hibiki contributors.
 
-
 Assets/            - Assets files.
 Build/             - Build files.
 Source/            - Source files.

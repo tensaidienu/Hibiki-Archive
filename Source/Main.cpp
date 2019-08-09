@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
     std::cout << "game init attempt...\n" << std::endl;
 
     const char windowTitle[] = "Hibiki Game Engine";
-    if(TheGame::getInstance()->init(windowTitle, 550, 100, 640, 480, false)) {
+    if(TheGame::getInstance()->init(windowTitle, 550, 100, 640, 480, SDL_WINDOW_RESIZABLE)) {
         std::cout << "game init success!\n" << std::endl;
 
         while(TheGame::getInstance()->isGameRunning()) {
