@@ -28,3 +28,4 @@ THANKS             - Hibiki contributors.
 Assets/            - Assets files.
 Build/             - Build files.
 Source/            - Source files.
+WebSource/         - Web Source files.
