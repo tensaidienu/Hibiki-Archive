@@ -4,7 +4,11 @@
 
 using namespace std;
 
-Collider::Collider() { }
+Collider::Collider(){}
+
+Collider::~Collider() {
+    
+}
 
 void Collider::load(float x, float y, std::string type) {
     this->size = Vector2D(x, y);
@@ -52,10 +56,6 @@ void Collider::update() {
     //position += velocity;
 }
 
-void Collider::clean() {
-    
-}
-
-Collider::~Collider() {
+void Collider::clear() {
     
 }

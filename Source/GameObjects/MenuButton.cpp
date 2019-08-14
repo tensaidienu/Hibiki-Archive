@@ -1,7 +1,11 @@
 #include "MenuButton.h"
 #include "../Managers/InputManager.h"
 
-MenuButton::MenuButton() : DynamicGameObject(){ }
+MenuButton::MenuButton() : DynamicGameObject(){}
+
+MenuButton::~MenuButton() {
+    //SDL_Log("Cleaning ~MenuButton");
+}
 
 void MenuButton::load(const LoaderParams* params) {
 	DynamicGameObject::load(params);
@@ -13,7 +17,7 @@ void MenuButton::draw() {
     DynamicGameObject::draw(); // use the base class drawing
 }
 
-void MenuButton::update() {    
+void MenuButton::update() {
     Vector2D* mousePos = TheInputManager::getInstance()->getMousePosition();
     if(mousePos->getX() < (position.getX() + width)
     && mousePos->getX() > position.getX()
@@ -21,9 +25,7 @@ void MenuButton::update() {
     && mousePos->getY() > position.getY()) {
         currentFrame = MOUSE_OVER;
         if(TheInputManager::getInstance()->getMouseButtonState(LEFT) && released) {
-            currentFrame = CLICKED;
-            functionCallback();
-            //callback(); // call our callback function
+            functionCallback(); // call our callback function
             released = false;
         }
     } else {
@@ -36,10 +38,6 @@ void MenuButton::setFuncCallback(std::function<void()> func){
     functionCallback = func;
 }
 
-void MenuButton::clean() {
-    DynamicGameObject::clean();
-}
-
-MenuButton::~MenuButton() {
-    
+void MenuButton::clear() {
+    DynamicGameObject::clear();
 }

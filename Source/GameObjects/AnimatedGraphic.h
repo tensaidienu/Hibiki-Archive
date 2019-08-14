@@ -15,7 +15,7 @@ class AnimatedGraphic : public DynamicGameObject {
 		virtual void load(const LoaderParams* params);
 		virtual void draw();
 	    virtual void update();
-	    virtual void clean();
+	    virtual void clear();
 };
 
 class AnimatedGraphicCreator : public BaseCreator {

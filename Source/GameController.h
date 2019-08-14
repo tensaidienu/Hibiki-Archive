@@ -15,18 +15,16 @@ class GameController {
 
         static GameController* gameInstance;
 
-        SDL_Window* mainWindow;
-        SDL_Renderer* renderer;
-        SDL_Texture* texture;
-
-        std::vector<GameObject*> gameObjects;
+        SDL_Window* mainWindow = nullptr;
+        SDL_Renderer* renderer = nullptr;
+        SDL_Texture* texture = nullptr;
 
         int gameWidth;
 	    int gameHeight;
         int currentFrame;
-        bool gameRunning;
+        bool gameRunning  = true;
 
-        GameStateMachine* gameStateMachine;
+        GameStateMachine* gameStateMachine = nullptr;
     public:
         static GameController* getInstance() {
             if(gameInstance == 0) {
@@ -35,13 +33,14 @@ class GameController {
             }
             return gameInstance;
         }
-        bool init(const char* title, int xpos, int ypos, int width, int height, int tags);
+        bool init(std::string title, int xpos, int ypos, int width, int height, int tags);
         void handleEvents();
         void update();
         void render();
         void draw();
-        void clean();
+        void clear();
         bool isGameRunning();
+        void setGameRunning(bool gameRunning);
         SDL_Renderer* getRenderer() const { return renderer; }
         GameStateMachine* getStateMachine() { return gameStateMachine; }
         int getGameWidth() const { return gameWidth; }

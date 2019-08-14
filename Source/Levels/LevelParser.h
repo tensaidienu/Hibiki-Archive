@@ -3,6 +3,8 @@
 
 #include <vector>
 
+#include "SDL2/SDL.h"
+
 #include "Level.h"
 #include "../Managers/TextureManager.h"
 #include "../GameController.h"
@@ -13,7 +15,7 @@
 using namespace tinyxml2;
 
 /*#ifndef XMLCheckResult
-	#define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { printf("Error: %i\n", a_eResult); return a_eResult; }
+	#define XMLCheckResult(a_eResult) if (a_eResult != XML_SUCCESS) { SDL_Log("Error: %i", a_eResult.c_str()); return a_eResult; }
 #endif*/
 
 class LevelParser {
@@ -26,9 +28,9 @@ class LevelParser {
         void parseStaticGameObjects(XMLElement* objectElement, std::vector<Layer*> *layers, Level* level);
         void parsePlayers(XMLElement* objectElement, std::vector<Layer*> *layers, Level* level);
         
-        int tileSize;
-        int width;
-        int height;
+        int tileSize = 0;
+        int width = 0;
+        int height = 0;
     public:
         Level* parseLevel(std::string levelFile);
 };

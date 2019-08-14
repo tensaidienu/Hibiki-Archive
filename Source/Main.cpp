@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "SDL2/SDL.h"
+
 #include "GameController.h"
 
 const int FPS = 60;
@@ -7,11 +9,12 @@ const int DELAY_TIME = 1000.0f / FPS;
 
 int main(int argc, char *argv[]) {
     Uint32 frameStart, frameTime;
-    std::cout << "game init attempt...\n" << std::endl;
+    SDL_Log("MAIN - Game init attempt...");
 
-    const char windowTitle[] = "Hibiki Game Engine";
+    //const char windowTitle[] = "Hibiki Game Engine";
+    std::string windowTitle = "Hibiki Game Engine";
     if(TheGame::getInstance()->init(windowTitle, 550, 100, 640, 480, SDL_WINDOW_RESIZABLE)) {
-        std::cout << "game init success!\n" << std::endl;
+        SDL_Log("MAIN - Game init success!");
 
         while(TheGame::getInstance()->isGameRunning()) {
             frameStart = SDL_GetTicks();
@@ -27,11 +30,11 @@ int main(int argc, char *argv[]) {
         }
 
     } else {
-        std::cout << "game init failure - " << SDL_GetError() << "\n" << std::endl;
+        SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, "MAIN - Game init failure - %s", SDL_GetError());
         return -1;
     }
 
-    std::cout << "game closing...\n" << std::endl;
-    TheGame::getInstance()->clean();
+    SDL_Log("MAIN - Game closing...");
+    TheGame::getInstance()->clear();
     return 0;
 }

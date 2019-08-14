@@ -12,10 +12,11 @@
 class PlayState : public GameState {
     private:
         static const std::string playID;
-        Level* level;
+        Level* level = nullptr;
     public:
         PlayState();
         ~PlayState();
+        
         virtual void update();
         virtual void render();
         virtual bool onEnter();

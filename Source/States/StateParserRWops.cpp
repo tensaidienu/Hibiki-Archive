@@ -1,15 +1,31 @@
 #include "SDL2/SDL.h"
 
 #include "StateParser.h"
-#include "../Managers/TextureManager.h"
+
 #include "../GameController.h"
+#include "../GlobalVariables.h"
+
+#include "../Managers/TextureManager.h"
 #include "../Factories/GameObjectFactory.h"
 
 bool StateParser::parseState(std::string stateFile, std::string stateID, std::vector<GameObject*> *objects, std::vector<std::string> *textureIDs) {	
 	XMLDocument xmlDoc;
 
-	if (xmlDoc.LoadFile(stateFile.c_str()) != 0) {
-        SDL_LogError(0, "%d: Error while loading the file  ----->>> %s", xmlDoc.Error(), stateFile.c_str());
+	/* Load graphics */
+	SDL_RWops *file;
+    FILE* fp = fopen(stateFile.c_str(), "rb" );
+    
+	char* doc_contents;
+	file = SDL_RWFromFile(stateFile.c_str(), "rb");
+	size_t file_length = SDL_RWseek(file, 0, SEEK_END);
+	(doc_contents) = new char[file_length + 1]; // allow an extra character for '\0'
+	SDL_RWseek(file, 0, SEEK_SET);
+	int n_blocks = SDL_RWread(file, (doc_contents), 1, file_length);
+	SDL_RWclose(file);
+	(doc_contents)[file_length] = '\0';
+
+    if (xmlDoc.Parse(doc_contents) != 0) {
+		SDL_LogError(0, "%s: Error while loading the file  ----->>> %s", xmlDoc.Error(), stateFile.c_str());
         //std::cerr << xmlDoc.Error() << " Error while loading the file  ----->>>  " << stateFile.c_str() << ERROR_FILE << std::endl;
 		return false; // erro a carregar o ficheiro
 	}

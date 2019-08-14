@@ -8,9 +8,9 @@ class Vector2D {
         float x;
         float y;
     public:
-        Vector2D(): x(), y() {}
+        Vector2D(): x(0), y(0){}
         Vector2D(float x2, float y2): x(x2), y(y2) {}
-        ~Vector2D() {}
+        ~Vector2D(){}
         float getX() { return x; }
         float getY() { return y; }
         void setX(float x2) { x = x2; }

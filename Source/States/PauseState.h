@@ -19,6 +19,7 @@ class PauseState : public MenuState {
     public:
         PauseState();
         ~PauseState();
+        
         virtual void update();
         virtual void render();
         virtual bool onEnter();

@@ -18,14 +18,14 @@ const int joystickDeadZone = 1000;
 class InputManager {
     private:
         InputManager();
-        ~InputManager() {}
+        ~InputManager();
 
         static InputManager* InputManagerInstance;
 
         std::vector<SDL_Joystick*> joysticks;
         std::vector<std::pair<Vector2D*, Vector2D*> > joysticksValues;
         std::vector<std::vector<bool> > buttonStates;
-        bool joysticksInitialised;
+        bool joysticksInitialised = false;
 
         std::vector<bool> mouseButtonStates;
         Vector2D* mousePosition;
@@ -54,7 +54,7 @@ class InputManager {
         int xvalue(int joy, int stick);
         int yvalue(int joy, int stick);
         void update();
-        void clean();        
+        void clear();        
         bool isJoysticksInitialised() {
             return joysticksInitialised;
         }

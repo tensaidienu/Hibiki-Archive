@@ -3,6 +3,8 @@
 
 #include <iostream>
 
+#include "SDL2/SDL.h"
+
 #include "GameController.h"
 
 struct context { int x; };
@@ -37,12 +39,12 @@ int main(int argc, char *argv[]) {
     int simulate_infinite_loop = 1;
     ctx.x = 0;
 
-    std::cout << "game init attempt...\n" << std::endl;
+    SDL_Log("Game init attempt...");
     const char windowTitle[] = "Hibiki Game Engine";
     if(TheGame::getInstance()->init(windowTitle, 550, 100, 640, 480, SDL_WINDOW_SHOWN)) {
-        std::cout << "game init success!\n" << std::endl;
+        SDL_Log("Game init success!");
     } else {
-        std::cout << "game init failure - " << SDL_GetError() << "\n" << std::endl;
+        SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, "Game init failure - %s", SDL_GetError());
         return -1;
     }
 
@@ -53,9 +55,7 @@ int main(int argc, char *argv[]) {
      * and this code will run straight away.
      * If simulate_infinite_loop = 1 then this code will not be reached
      */
-    printf("quitting...\n");
-
-    std::cout << "game closing...\n" << std::endl;
-    TheGame::getInstance()->clean();
+    SDL_Log("Game closing...");
+    TheGame::getInstance()->clear();
     return 0;
 }

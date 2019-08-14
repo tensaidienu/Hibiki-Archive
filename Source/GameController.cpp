@@ -17,33 +17,32 @@ using namespace std;
 GameController* GameController::gameInstance = 0;
 
 GameController::GameController() {
-   mainWindow   = NULL;
-   renderer = NULL;
-   gameRunning  = true;
+    
 }
 
 GameController::~GameController() {
 
 }
 
-bool GameController::init(const char* title, int xpos, int ypos, int width, int height, int flags) {
+bool GameController::init(std::string title, int xpos, int ypos, int width, int height, int flags) {
     //flags = SDL_WINDOW_RESIZABLE;
     //flags = SDL_WINDOW_SHOWN;
-	gameWidth = width;
-	gameHeight = height;
+	this->gameWidth = width;
+	this->gameHeight = height;
 
     // attempt to initialize SDL
-    if(SDL_Init(SDL_INIT_VIDEO) == 0) {
+    //if(SDL_Init(SDL_INIT_VIDEO) == 0) {
+    if(SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, "SDL init success");
         
-        mainWindow = SDL_CreateWindow(title, xpos, ypos, width, height, flags);
-        if(mainWindow != NULL) {
+        this->mainWindow = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);
+        if(this->mainWindow != nullptr) {
             SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, "mainWindow creation success");
             
-            SDL_SetWindowIcon(mainWindow, TheTextureManager::getInstance()->loadImgSurface("../Assets/Hibiki.ico"));
+            SDL_SetWindowIcon(this->mainWindow, TheTextureManager::getInstance()->loadImgSurface("../Assets/Hibiki.ico"));
 
-            renderer = SDL_CreateRenderer(mainWindow, -1, SDL_RENDERER_SOFTWARE);
-            if(renderer != NULL) {
+            this->renderer = SDL_CreateRenderer(this->mainWindow, -1, SDL_RENDERER_SOFTWARE);
+            if(this->renderer != nullptr) {
                 SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, "renderer creation success");
                 //SDL_SetRenderDrawColor(renderer, 255,255,255,255);
             } else {
@@ -59,7 +58,7 @@ bool GameController::init(const char* title, int xpos, int ypos, int width, int 
         return false;
     }
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 0);
+    SDL_SetRenderDrawColor(this->renderer, 0, 0, 0, 0);
 
     TheGameObjectFactory::getInstance()->registerType("MenuButton", new MenuButtonCreator());	
 	TheGameObjectFactory::getInstance()->registerType("Player", new PlayerCreator());
@@ -67,64 +66,67 @@ bool GameController::init(const char* title, int xpos, int ypos, int width, int 
     TheGameObjectFactory::getInstance()->registerType("StaticGameObject", new StaticGameObjectCreator());
 	TheGameObjectFactory::getInstance()->registerType("AnimatedGraphic", new AnimatedGraphicCreator());
     
-	gameStateMachine = new GameStateMachine();
-	gameStateMachine->initialState();
+	this->gameStateMachine = new GameStateMachine();
+	this->gameStateMachine->initialState();
 
-    // load sprites -> gothloli2.png, officeman4.png -> 32x48
-    /*if(!TheTextureManager::getInstance()->loadImg("../Assets/Characters/gothloli2.png", "gothloli2", renderer)){
-        return false;
-    }
-    if(!TheTextureManager::getInstance()->loadImg("../Assets/Characters/officeman4.png", "officeman4", renderer)){
-        return false;
-    }*/
-    //GameObject* player = TheGameObjectFactory::getInstance()->create("Player");
-    //player->load(new LoaderParams(100, 100, 32, 48, "officeman4"));
-    //gameObjects.push_back(player);
-    //gameObjects.push_back(new Player(new LoaderParams(100, 100, 32, 48,"gothloli2")));
-    //gameObjects.push_back(new Enemy(new LoaderParams(300, 300, 32, 48,"officeman4")));
     SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, "Init success");  
-    gameRunning = true; // everything inited successfully start the main loop
+    this->gameRunning = true; // everything inited successfully start the main loop
     return true;
 }
 
 void GameController::handleEvents() {
     TheInputManager::getInstance()->update();
 
-    if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_RETURN)) {
-        gameStateMachine->changeState(HIBIKI_MAIN_MENU);
+    if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_RETURN) && this->gameStateMachine) {
+        this->gameStateMachine->changeState(HIBIKI_MAIN_MENU);
     }
 }
 
 void GameController::update() {
-    gameStateMachine->update();
-    //SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, std::to_string(currentFrame).c_str());
+    if (this->gameStateMachine) {
+        this->gameStateMachine->update();
+    }
 }
 
 void GameController::render() {
-    SDL_RenderClear(renderer); // clear the renderer to the draw color
+    SDL_RenderClear(this->renderer); // clear the renderer to the draw color
 
-    gameStateMachine->render();
+    if (this->gameStateMachine) {
+        this->gameStateMachine->render();
+    }
 
-    SDL_RenderPresent(renderer); // draw to the screen
+    SDL_RenderPresent(this->renderer); // draw to the screen
 }
 
 void GameController::draw() {
 
 }
 
-void GameController::clean() {
-    SDL_Log("cleaning GameController");
-    TheInputManager::getInstance()->clean();
+void GameController::clear() {
+    SDL_Log("Cleaning GameController");
+
+    this->gameRunning = false;
+
+    delete this->gameStateMachine;
+    this->gameStateMachine = nullptr;
+
+    TheInputManager::getInstance()->clear();
     TheTextureManager::getInstance()->clear();
 
-    gameObjects.clear();
-    gameRunning = false;
-
-    SDL_DestroyWindow(mainWindow);
+    SDL_DestroyTexture(texture);
     SDL_DestroyRenderer(renderer);
+    SDL_DestroyWindow(mainWindow);
+    this->texture = nullptr;
+    this->renderer = nullptr;
+    this->mainWindow = nullptr;
+
     SDL_Quit();
 }
 
 bool GameController::isGameRunning() {
-    return gameRunning;
+    return this->gameRunning;
+}
+
+void GameController::setGameRunning(bool gameRunning) {
+    this->gameRunning = gameRunning;
 }

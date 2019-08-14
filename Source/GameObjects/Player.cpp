@@ -3,7 +3,7 @@
 
 using namespace std;
 
-Player::Player() : DynamicGameObject(){ }
+Player::Player() : DynamicGameObject(){}
 
 void Player::load(const LoaderParams *params) {
     DynamicGameObject::load(params);
@@ -14,7 +14,7 @@ void Player::draw() {
 }
 
 void Player::update() {
-    currentFrame = int(((SDL_GetTicks() / 100) % numFrames));
+    currentFrame = int(((SDL_GetTicks() / 150) % numFrames));
     velocity += acceleration;
     position += velocity;
     collider.getSize().setX(position.getX());
@@ -23,7 +23,7 @@ void Player::update() {
     velocity.setY(0);
 }
 
-void Player::clean() {
+void Player::clear() {
     
 }
 

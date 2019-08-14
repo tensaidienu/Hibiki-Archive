@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "SDL2/SDL.h"
+
 #include "InputManager.h"
 #include "../GameController.h"
 
@@ -11,6 +13,15 @@ InputManager::InputManager() {
     for (int x = 0; x < 3; x++) {
         mouseButtonStates.push_back(false);
     }
+}
+
+InputManager::~InputManager() {
+    /*Uint8* keyStates;
+    std::vector<SDL_Joystick*> joysticks;
+    std::vector<std::pair<Vector2D*, Vector2D*> > joysticksValues;
+    std::vector<std::vector<bool> > buttonStates;
+    std::vector<bool> mouseButtonStates;
+    Vector2D* mousePosition;*/
 }
 
 void InputManager::initialiseJoysticks() {
@@ -30,12 +41,12 @@ void InputManager::initialiseJoysticks() {
                 }
                 buttonStates.push_back(tempButtons);
             } else {
-                std::cout << SDL_GetError() << std::endl;
+                SDL_Log("%s", SDL_GetError());
             }
         }
         SDL_JoystickEventState(SDL_ENABLE);
         joysticksInitialised = true;
-        std::cout << "Initialised "<< joysticks.size() << "joystick(s)" << std::endl;
+        SDL_Log("Initialised %lu joystick(s)", joysticks.size());
     } else {
         joysticksInitialised = false;
     }
@@ -68,7 +79,7 @@ void InputManager::update() {
     while(SDL_PollEvent(&event)) {
         switch (event.type) {
             case SDL_QUIT:
-                TheGame::getInstance()->clean();
+                TheGame::getInstance()->clear();
                 break;
             case SDL_MOUSEMOTION:
                 onMouseMove(event);
@@ -98,7 +109,7 @@ void InputManager::update() {
     }
 }
 
-void InputManager::clean() {
+void InputManager::clear() {
     if(joysticksInitialised) {
         for(unsigned int i = 0; i < SDL_NumJoysticks(); i++) {
             SDL_JoystickClose(joysticks[i]);

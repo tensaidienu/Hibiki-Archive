@@ -13,17 +13,22 @@
 
 const std::string PauseState::pauseID = "PAUSE";
 
-PauseState::PauseState() { }
+PauseState::PauseState(){}
+
+PauseState::~PauseState() {
+    SDL_Log("Cleaning PauseState");
+    for (auto gameObject : gameObjects) {
+        delete gameObject;
+    }
+    gameObjects.clear();
+}
 
 void PauseState::pauseToMain() {
     TheGame::getInstance()->getStateMachine()->pauseToMain();
-    //TheGame::getInstance()->getStateMachine()->popState();
-    //TheGame::getInstance()->getStateMachine()->changeState(HIBIKI_MAIN_MENU);
 }
 
 void PauseState::resumePlay() {
     TheGame::getInstance()->getStateMachine()->resumePlay();
-    //TheGame::getInstance()->getStateMachine()->popState();
 }
 
 void PauseState::update() {
@@ -40,7 +45,6 @@ void PauseState::render() {
 
 bool PauseState::onEnter() {
     StateParser stateParser;
-    std::cout << PATH_GUI+"Pause.xml" << std::endl;
     stateParser.parseState(PATH_GUI + "Pause.xml", pauseID, &gameObjects, &textureIDList);
 
     functionCallbacks.emplace("pauseToMain", pauseToMain);
@@ -53,7 +57,7 @@ bool PauseState::onEnter() {
 
 bool PauseState::onExit() {
     for(int i = 0; i < gameObjects.size(); i++) {
-        gameObjects[i]->clean();
+        gameObjects[i]->clear();
     }
     gameObjects.clear();
     // clear the texture manager
@@ -73,11 +77,5 @@ void PauseState::setCallbacks() {
             MenuButton* button = dynamic_cast<MenuButton*>(gameObjects[i]);
             button->setFuncCallback(functionCallbacks[button->getCallbackID()]);
         }
-    }
-}
-
-PauseState::~PauseState() {
-    for (auto it : gameObjects) {
-        delete it;
     }
 }

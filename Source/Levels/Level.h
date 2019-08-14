@@ -17,15 +17,15 @@
 class LevelParser;
 
 struct Tileset {
-    int firstGridID;
-    int tileWidth;
-    int tileHeight;
-    int spacing;
-    int margin;
-    int width;
-    int height;
-    int numColumns;
-    std::string name;
+    int firstGridID = 0;
+    int tileWidth = 0;
+    int tileHeight = 0;
+    int spacing = 0;
+    int margin = 0;
+    int width = 0;
+    int height = 0;
+    int numColumns = 0;
+    std::string name = std::string("none");
 };
 
 class Level {
@@ -46,13 +46,13 @@ class Level {
         void static COLLISION_TEST();
         void static CLICK_TEST();
 
-        std::vector<GameObject*> players;
-        std::vector<GameObject*> enemies;
-        std::vector<GameObject*> staticsGameObjects;
-        std::map<std::string, std::function<void()> > functionCallbacks;
+        std::vector<GameObject*> players = std::vector<GameObject*>();
+        std::vector<GameObject*> enemies = std::vector<GameObject*>();
+        std::vector<GameObject*> staticsGameObjects = std::vector<GameObject*>();
+        std::map<std::string, std::function<void()> > functionCallbacks = std::map<std::string, std::function<void()> >();
 
-        std::vector<Tileset> tilesets;
-        std::vector<Layer*> layers;
+        std::vector<Tileset> tilesets = std::vector<Tileset>();
+        std::vector<Layer*> layers = std::vector<Layer*>();
         friend class LevelParser;
 
         enum button_state {
@@ -61,7 +61,7 @@ class Level {
 		    CLICKED = 2
 	    };
         bool released;
-        Vector2D* mousePos;
+        Vector2D* mousePos = nullptr;
     public:
         Level();
         ~Level();

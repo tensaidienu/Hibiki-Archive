@@ -18,7 +18,7 @@ class Collider {
         virtual void load(float x, float y, std::string type);
         virtual void draw(int width, int height);
         virtual void update(); 
-        virtual void clean();
+        virtual void clear();
 
         Vector2D& getOffset() { return offset; }
         Vector2D& getSize() { return size; }

@@ -329,8 +329,8 @@ private:
 class MemPool
 {
 public:
-    MemPool() {}
-    virtual ~MemPool() {}
+    MemPool(){}
+    virtual ~MemPool(){}
 
     virtual int ItemSize() const = 0;
     virtual void* Alloc() = 0;
@@ -480,7 +480,7 @@ private:
 class TINYXML2_LIB XMLVisitor
 {
 public:
-    virtual ~XMLVisitor() {}
+    virtual ~XMLVisitor(){}
 
     /// Visit a document.
     virtual bool VisitEnter( const XMLDocument& /*doc*/ )			{

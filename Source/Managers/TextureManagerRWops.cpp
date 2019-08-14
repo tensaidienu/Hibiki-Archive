@@ -9,12 +9,12 @@ using namespace std;
 TextureManager* TextureManager::textureManagerInstance = 0;
 
 SDL_Surface* TextureManager::loadImgSurface(std::string fileName) {
-    return IMG_Load(fileName.c_str());
+    SDL_RWops *file = SDL_RWFromFile(fileName.c_str(), "rb");
+    return IMG_Load_RW(file, 1); /* 1 to automatically close the RWops. */
 }
 
-bool TextureManager::loadImg(std::string fileName, std::string id,
-                             SDL_Renderer* renderer, std::string transparency) {
-    SDL_Surface* tempSurface = IMG_Load(fileName.c_str());
+bool TextureManager::loadImg(std::string fileName, std::string id, SDL_Renderer* renderer, std::string transparency) {
+    SDL_Surface *tempSurface = IMG_Load_RW(SDL_RWFromFile(fileName.c_str(), "rb"), 1);
     if (tempSurface == 0) {
         return false;
     }

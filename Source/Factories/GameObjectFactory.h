@@ -4,12 +4,14 @@
 #include <string>
 #include <map>
 
+#include "SDL2/SDL.h"
+
 #include "../GameObjects/GameObject.h"
 
 class BaseCreator {
     public:
         virtual GameObject* createGameObject() const = 0;
-        virtual ~BaseCreator() {}
+        virtual ~BaseCreator(){}
 };
 
 class GameObjectFactory {
@@ -41,10 +43,10 @@ class GameObjectFactory {
         GameObject* create(std::string typeID) {
             std::map<std::string, BaseCreator*>::iterator it = this->creators.find(typeID);
             if(it == this->creators.end()) {
-                std::cout << "could not find type: " << typeID << "\n";
-                return NULL;
+                SDL_Log("Could not find type: %s", typeID.c_str());
+                return nullptr;
             }
-            std::cout << "Create: "+typeID << "\n";
+            SDL_Log("Create: %s", typeID.c_str());
             BaseCreator* creator = (*it).second;
             return creator->createGameObject();            
         }

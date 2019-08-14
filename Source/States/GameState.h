@@ -4,11 +4,13 @@
 #include <iostream>
 #include <string>
 
+#include "SDL2/SDL.h"
+
 class GameState {
     protected:
         std::vector<std::string> textureIDList;
     public:
-        virtual ~GameState() { std::cout << "Destructor of GameState" << std::endl; }
+        virtual ~GameState(){};
         virtual void update() = 0;
         virtual void render() = 0;
         virtual bool onEnter() = 0;

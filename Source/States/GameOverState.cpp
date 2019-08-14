@@ -12,6 +12,16 @@
 
 const std::string GameOverState::gameOverID = "GAMEOVER";
 
+GameOverState::GameOverState(){}
+
+GameOverState::~GameOverState() {
+    SDL_Log("Cleaning GameOverState");
+    for (auto gameObject : gameObjects) {
+        delete gameObject;
+    }
+    gameObjects.clear();
+}
+
 void GameOverState::update(){
 	for (int i = 0; i < gameObjects.size(); i++) {
 		gameObjects[i]->update();
@@ -38,7 +48,7 @@ bool GameOverState::onEnter() {
 
 bool GameOverState::onExit() {
 	for (int i = 0; i < gameObjects.size(); i++) {
-		gameObjects[i]->clean();
+		gameObjects[i]->clear();
 	}
 	gameObjects.clear();
 

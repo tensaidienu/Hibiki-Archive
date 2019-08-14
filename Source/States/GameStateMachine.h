@@ -9,12 +9,13 @@
 
 class GameStateMachine {
     private:
-        GameState* gameState;
-        GameState* tempGameState;
+        GameState* gameState = nullptr;
+        GameState* tempGameState = nullptr;
         bool wait = false;
     public:
         GameStateMachine();
         ~GameStateMachine();
+        
         void initialState();
         void changeState(HibikiGameState type);
         void pauseToMain();

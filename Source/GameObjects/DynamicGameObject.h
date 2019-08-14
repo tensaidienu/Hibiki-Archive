@@ -8,11 +8,11 @@
 
 class DynamicGameObject : public CollisionGameObject {
     protected:
-        int currentRow;
-        int currentFrame;
-        int numFrames;
-        int direction;
-        std::string textureID;
+        int currentRow = 0;
+        int currentFrame = 0;
+        int numFrames = 0;
+        int direction = 0;
+        std::string textureID = "";
     public:
         DynamicGameObject();
         ~DynamicGameObject(){};
@@ -20,7 +20,7 @@ class DynamicGameObject : public CollisionGameObject {
         virtual void load(const LoaderParams* params);
         virtual void draw();
         virtual void update(); 
-        virtual void clean();
+        virtual void clear();
 
         Vector2D& getPosition() { return position; }
         Vector2D& getVelocity() { return velocity; }
@@ -28,7 +28,7 @@ class DynamicGameObject : public CollisionGameObject {
         Collider& getCollider() { return collider; }
         int getWidth() { return width; }
         int getHeight() { return height; }
-        int getDirection() { return direction; }
+        int getDirection() { return direction = 0; }
         void setDirection(int direction2) { direction = direction2; }
         void setFuncCallback(std::function<void()> func);
 	    std::string getCallbackID() { return this->callbackID; }

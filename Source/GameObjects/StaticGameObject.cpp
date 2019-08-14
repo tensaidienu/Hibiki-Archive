@@ -2,7 +2,7 @@
 #include "../GameController.h"
 #include "../Managers/TextureManager.h"
 
-StaticGameObject::StaticGameObject() : CollisionGameObject(){ }
+StaticGameObject::StaticGameObject() : CollisionGameObject(){}
 
 void StaticGameObject::load(const LoaderParams* params) {
     position = Vector2D(params->getX(), params->getY());
@@ -28,10 +28,9 @@ void StaticGameObject::draw() {
 }
 
 void StaticGameObject::update() {
-    //velocity += acceleration;
-    //position += velocity;
+    
 }
 
-void StaticGameObject::clean() {
+void StaticGameObject::clear() {
     
 }

@@ -18,6 +18,7 @@ class MainMenuState : public MenuState {
     public:
         MainMenuState();
         ~MainMenuState();
+        
         virtual void update();
         virtual void render();
         virtual bool onEnter();

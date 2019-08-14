@@ -29,6 +29,7 @@ static const std::string PATH_TSX = "../Assets/Maps/TSX/";
 static const std::string PATH_CHARACTERS = "../Assets/Characters/";
 static const std::string PATH_GUI = "../Assets/GUI/";
 static const std::string PATH_MENU = "../Assets/GUI/Menu/";
+static const std::string ERROR_FILE = "../Assets/error.txt";
 
 static std::map<std::string, HibikiCollisionType> hibikiCollisionTypeMap;
 

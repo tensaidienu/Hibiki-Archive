@@ -14,14 +14,14 @@ class MenuButton : public DynamicGameObject {
 		    MOUSE_OVER = 1,
 		    CLICKED = 2
 	    };
-        bool released;
+        bool released = true;
     public:
         MenuButton();
         ~MenuButton();
         virtual void load(const LoaderParams* params);
         virtual void draw();
         virtual void update();
-        virtual void clean();
+        virtual void clear();
         void setFuncCallback(std::function<void()> func);
 	    std::string getCallbackID() { return this->callbackID; }
 };

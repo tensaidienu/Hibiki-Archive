@@ -14,8 +14,11 @@ class GameOverState : public MenuState {
 	    static const std::string gameOverID;
 	    std::vector<GameObject*> gameObjects;
 
-		 virtual void setCallbacks();
+		virtual void setCallbacks();
     public:
+        GameOverState();
+        ~GameOverState();
+
 	    virtual void update();
 	    virtual void render();
 

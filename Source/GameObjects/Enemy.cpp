@@ -2,7 +2,7 @@
 
 using namespace std;
 
-Enemy::Enemy() : DynamicGameObject(){ }
+Enemy::Enemy() : DynamicGameObject(){}
 
 void Enemy::load(const LoaderParams *params) {
     DynamicGameObject::load(params);
@@ -29,6 +29,6 @@ void Enemy::update() {
     }
 }
 
-void Enemy::clean() {
+void Enemy::clear() {
     
 }

@@ -9,7 +9,6 @@
 #include "../Libs/base64/base64.h"
 
 Level* LevelParser::parseLevel(std::string levelFile) {
-    //std::cout << "entering parseLevel\n";
     // create a TinyXML document and load the map XML
     XMLDocument levelDocument;
     levelDocument.LoadFile(levelFile.c_str());
@@ -27,7 +26,7 @@ Level* LevelParser::parseLevel(std::string levelFile) {
     root->QueryIntAttribute("height", &height);
 
     // parse the tilesets
-    for(XMLElement* e = root->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
+    for(XMLElement* e = root->FirstChildElement(); e != nullptr; e = e->NextSiblingElement()) {
         if(e->Value() == std::string("tileset")) {
             parseTilesets(root, e, level->getTilesets());
 
@@ -38,16 +37,16 @@ Level* LevelParser::parseLevel(std::string levelFile) {
     XMLElement* properties;
     //parse the textures
     std::string tempTransparency = "0", tempPath = "0", tempName = "0";
-    for (XMLElement* t = root->FirstChildElement(); t != NULL; t = t->NextSiblingElement()) {
+    for (XMLElement* t = root->FirstChildElement(); t != nullptr; t = t->NextSiblingElement()) {
         if (t->Value() == std::string("group")) {
             objectgroup = t->FirstChildElement();
             if (objectgroup->Value() == std::string("objectgroup")) {
-                for (XMLElement* object = objectgroup->FirstChildElement(); object != NULL; object = object->NextSiblingElement()) {
+                for (XMLElement* object = objectgroup->FirstChildElement(); object != nullptr; object = object->NextSiblingElement()) {
                     if (object->Value() == std::string("object")) {
                         tempName = object->Attribute("name");
                         properties = object->FirstChildElement();
                         if (properties->Value() == std::string("properties")) {
-                            for (XMLElement* property = properties->FirstChildElement(); property != NULL; property = property->NextSiblingElement()) {
+                            for (XMLElement* property = properties->FirstChildElement(); property != nullptr; property = property->NextSiblingElement()) {
                                 if (property->Value() == std::string("property")) {
                                     if (property->Attribute("name") == std::string("Path")) {
                                         tempPath = property->Attribute("value");
@@ -58,7 +57,6 @@ Level* LevelParser::parseLevel(std::string levelFile) {
                                 }
                             }
                         }
-                        //std::cout << PATH_CHARACTERS + tempPath << std::endl;
                         TheTextureManager::getInstance()->loadImg(PATH_CHARACTERS + tempPath, tempName, TheGame::getInstance()->getRenderer(), tempTransparency);
                     }
                 }
@@ -67,7 +65,7 @@ Level* LevelParser::parseLevel(std::string levelFile) {
     }
 
     // parse any object layers
-    for(XMLElement* e = root->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
+    for(XMLElement* e = root->FirstChildElement(); e != nullptr; e = e->NextSiblingElement()) {
         if(e->Value() == std::string("layer")) {
             parseTileLayer(e, level->getLayers(), level->getTilesets());
         } else if(e->Value() == std::string("objectgroup")) {
@@ -75,12 +73,10 @@ Level* LevelParser::parseLevel(std::string levelFile) {
         }
     }
 
-    //std::cout << "end parseLevel\n";
     return level;
 }
 
 void LevelParser::parseTilesets(XMLElement* root, XMLElement* tilesetRoot, std::vector<Tileset>* tilesets) {
-    //std::cout << "entering parseTilesets\n";
     XMLElement* imageRoot;
     // create a tileset object
     Tileset tileset;
@@ -111,7 +107,6 @@ void LevelParser::parseTilesets(XMLElement* root, XMLElement* tilesetRoot, std::
     tileset.name = tilesetRoot->Attribute("name");
     tileset.numColumns = tileset.width / (tileset.tileWidth + tileset.spacing);
     tilesets->push_back(tileset);
-    //std::cout << "end parseTilesets\n";
 }
 
 void LevelParser::parseTileLayer(XMLElement* tileElement, std::vector<Layer*> *layers, const std::vector<Tileset>* tilesets) {
@@ -121,30 +116,31 @@ void LevelParser::parseTileLayer(XMLElement* tileElement, std::vector<Layer*> *l
 
     TileLayer* tileLayer = new TileLayer(tileSize, *tilesets);
     // tile data
-    std::vector<std::vector<int>> data;
-    std::string decodedIDs;
-    XMLElement* dataNode;
+    std::vector<std::vector<int>> data = std::vector<std::vector<int>>();
+    std::string decodedIDs= std::string();
+    XMLElement* dataNode = nullptr;
 
     tileLayer->offsetX = 0;
     tileLayer->offsetY = 0;
     tileElement->QueryIntAttribute("offsetx", &tileLayer->offsetX);
     tileElement->QueryIntAttribute("offsety", &tileLayer->offsetY);
 
-    for(XMLElement* e = tileElement->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
+    for(XMLElement* e = tileElement->FirstChildElement(); e != nullptr; e = e->NextSiblingElement()) {
         if(e->Value() == std::string("data")) {
             dataNode = e;
         }
     }
     //NODE
-    for(XMLNode* e = dataNode->FirstChild(); e != NULL; e = e->NextSibling()) {
+    for(XMLNode* e = dataNode->FirstChild(); e != nullptr; e = e->NextSibling()) {
         XMLText* text = e->ToText();
         std::string t = text->Value();
         decodedIDs = base64_decode(TheGlobalVariables::trim(t));
     }
+    // Invalid read of size 4 ----=/FIX ANOTHER TIME\=----
     // uncompress zlib compression
     uLongf numGids = width * height * sizeof(int);
     std::vector<unsigned> gids(numGids);
-    uncompress((Bytef*)&gids[0], &numGids,(const Bytef*)decodedIDs.c_str(), decodedIDs.size());
+    uncompress((Bytef*)&gids[0], &numGids, (const Bytef*)decodedIDs.c_str(), decodedIDs.size());
     std::vector<int> layerRow(width);
     for(int j = 0; j < height; j++) {
         data.push_back(layerRow);
@@ -156,6 +152,7 @@ void LevelParser::parseTileLayer(XMLElement* tileElement, std::vector<Layer*> *l
     }
     tileLayer->setTileIDs(data);
     layers->push_back(tileLayer);
+    // Invalid read of size 4 ----=/FIX ANOTHER TIME\=----
 }
 
 void LevelParser::parseObjects(XMLElement* objectElement, std::vector<Layer*> *layers, std::string name, Level* level) {
@@ -180,7 +177,7 @@ void LevelParser::parsePlayers(XMLElement* objectElement, std::vector<Layer*> *l
 	std::string textureID;
 
 	if (objectElement->FirstChildElement()->Value() == std::string("properties")) {		
-        for (XMLElement* properties = objectElement->FirstChildElement()->FirstChildElement(); properties != NULL; properties = properties->NextSiblingElement()) {
+        for (XMLElement* properties = objectElement->FirstChildElement()->FirstChildElement(); properties != nullptr; properties = properties->NextSiblingElement()) {
 			if (properties->Value() == std::string("property")) {                
 				if (properties->Attribute("name") == std::string("numFrames")) {
 				    properties->QueryIntAttribute("value", &numFrames);
@@ -199,12 +196,12 @@ void LevelParser::parsePlayers(XMLElement* objectElement, std::vector<Layer*> *l
 		}
 	}
 
-    for (XMLElement* e = objectElement->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
+    for (XMLElement* e = objectElement->FirstChildElement(); e != nullptr; e = e->NextSiblingElement()) {
 		if (e->Value() == std::string("object")) {
 			e->QueryIntAttribute("x", &x);
 			e->QueryIntAttribute("y", &y);
 
-            std::cout << "-------CREATE----->>>(" << textureID << ")" << std::endl;
+            SDL_Log("-------CREATE----->>>( %s )", textureID.c_str());
 			GameObject* gameObject = TheGameObjectFactory::getInstance()->create(e->Attribute("type"));
 			gameObject->load(new LoaderParams(x, y, width, height, textureID, std::string(), numFrames, animSpeed,
             std::string("COLLISION_BLOCK_AND_TRIGGER")));
@@ -218,7 +215,7 @@ int x, y, width, height, numFrames, callbackID, animSpeed;
 	std::string textureID;
 
 	if (objectElement->FirstChildElement()->Value() == std::string("properties")) {		
-        for (XMLElement* properties = objectElement->FirstChildElement()->FirstChildElement(); properties != NULL; properties = properties->NextSiblingElement()) {
+        for (XMLElement* properties = objectElement->FirstChildElement()->FirstChildElement(); properties != nullptr; properties = properties->NextSiblingElement()) {
 			if (properties->Value() == std::string("property")) {                
 				if (properties->Attribute("name") == std::string("numFrames")) {
 				    properties->QueryIntAttribute("value", &numFrames);
@@ -237,12 +234,12 @@ int x, y, width, height, numFrames, callbackID, animSpeed;
 		}
 	}
 
-    for (XMLElement* e = objectElement->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
+    for (XMLElement* e = objectElement->FirstChildElement(); e != nullptr; e = e->NextSiblingElement()) {
 		if (e->Value() == std::string("object")) {
 			e->QueryIntAttribute("x", &x);
 			e->QueryIntAttribute("y", &y);
 
-            std::cout << "-------CREATE----->>>(" << textureID << ")" << std::endl;
+            SDL_Log("-------CREATE----->>>( %s )", textureID.c_str());
 			GameObject* gameObject = TheGameObjectFactory::getInstance()->create(e->Attribute("type"));
 			gameObject->load(new LoaderParams(x, y, width, height, textureID, std::string(), numFrames, animSpeed,
             std::string("COLLISION_BLOCK_AND_TRIGGER")));
@@ -255,7 +252,7 @@ void LevelParser::parseStaticGameObjects(XMLElement* objectElement, std::vector<
     int x, y, width, height;
 	std::string gameObjectID, type;
 
-    for (XMLElement* e = objectElement->FirstChildElement(); e != NULL; e = e->NextSiblingElement()) {
+    for (XMLElement* e = objectElement->FirstChildElement(); e != nullptr; e = e->NextSiblingElement()) {
 		if (e->Value() == std::string("object")) {
 			e->QueryIntAttribute("x", &x);
 			e->QueryIntAttribute("y", &y);
@@ -264,7 +261,7 @@ void LevelParser::parseStaticGameObjects(XMLElement* objectElement, std::vector<
             gameObjectID = e->Attribute("name");
             type = e->Attribute("type");
 
-            std::cout << "-------CREATE----->>>(" << gameObjectID << ")" << std::endl;
+            SDL_Log("-------CREATE----->>>( %s )", gameObjectID.c_str());
 			GameObject* gameObject = TheGameObjectFactory::getInstance()->create("StaticGameObject");
 			gameObject->load(new LoaderParams(gameObjectID, x, y, width, height, type));
 			level->getStaticsGameObjects()->push_back(gameObject);

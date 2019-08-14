@@ -1,11 +1,36 @@
+#include "SDL2/SDL.h"
+
 #include "Level.h"
 #include "../Managers/InputManager.h"
 
 Level::Level(){
     functionCallbacks.emplace("COLLISION_TEST", COLLISION_TEST);
     functionCallbacks.emplace("CLICK_TEST", CLICK_TEST);
-    released = true;
-    //functionCallbacks.emplace("exitFromMenu", exitFromMenu);
+    this->released = true;
+}
+
+Level::~Level() {
+    this->tilesets.clear();
+    
+    for (auto it : this->layers) {
+        delete it;
+    }
+    this->layers.clear();
+
+    for (auto it : this->players) {
+        delete it;
+    }
+    this->players.clear();
+
+    for (auto it : this->enemies) {
+        delete it;
+    }
+    this->enemies.clear();
+
+    for (auto it : this->staticsGameObjects) {
+        delete it;
+    }
+    this->staticsGameObjects.clear();
 }
 
 void Level::update() {
@@ -16,168 +41,168 @@ void Level::update() {
 }
 
 void Level::render() {
-    for(int i = 0; i < layers.size(); i++) {
-        layers[i]->render();
+    for(int i = 0; i < this->layers.size(); i++) {
+        this->layers[i]->render();
     }
-    for(int i = 0; i < players.size(); i++) {
-        players[i]->draw();
+    for(int i = 0; i < this->players.size(); i++) {
+        this->players[i]->draw();
     }
-    for(int i = 0; i < enemies.size(); i++) {
-        enemies[i]->draw();
+    for(int i = 0; i < this->enemies.size(); i++) {
+        this->enemies[i]->draw();
     }
-    for(int i = 0; i < staticsGameObjects.size(); i++) {
-        staticsGameObjects[i]->draw();
+    for(int i = 0; i < this->staticsGameObjects.size(); i++) {
+        this->staticsGameObjects[i]->draw();
     }
 }
 
 void Level::clear() {
-    tilesets.clear();
-    layers.clear();
+    this->tilesets.clear();
+    this->layers.clear();
 }
 
 void Level::layersUpdate() {
-    for(int l = 0; l < layers.size(); l++) {
-        layers[l]->update();
+    for(int l = 0; l < this->layers.size(); l++) {
+        this->layers[l]->update();
     }
 }
 
 void Level::playersUpdate() {
     float velocity = 5.5;
 
-    for(int p = 0; p < players.size(); p++) {
+    for(int p = 0; p < this->players.size(); p++) {
         //BASIC GRAVITY WITHOUT ACCELERTATION USING BASIC VELOCITY
-        for(int s = 0; s < staticsGameObjects.size(); s++) {
-            if(dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER|| 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
-                dynamic_cast<CollisionGameObject*>(players[p])->getVelocity().setY(velocity);
-                checkBlockCollisionDown(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(staticsGameObjects[s]));
+        for(int s = 0; s < this->staticsGameObjects.size(); s++) {
+            if(dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER|| 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
+                dynamic_cast<CollisionGameObject*>(this->players[p])->getVelocity().setY(velocity);
+                checkBlockCollisionDown(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s]));
             }
         }
-        for(int e = 0; e < enemies.size(); e++) {
-            checkBlockCollisionDown(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(enemies[e]));
+        for(int e = 0; e < this->enemies.size(); e++) {
+            checkBlockCollisionDown(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->enemies[e]));
         }
 
         if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_RIGHT)) {
-            dynamic_cast<CollisionGameObject*>(players[p])->getVelocity().setX(velocity);
-            dynamic_cast<DynamicGameObject*>(players[p])->setDirection(1);
-            for(int s = 0; s < staticsGameObjects.size(); s++) {
-                if(dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER || 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
-                    checkBlockCollisionRight(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(staticsGameObjects[s]));
+            dynamic_cast<CollisionGameObject*>(this->players[p])->getVelocity().setX(velocity);
+            dynamic_cast<DynamicGameObject*>(this->players[p])->setDirection(1);
+            for(int s = 0; s < this->staticsGameObjects.size(); s++) {
+                if(dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER || 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
+                    checkBlockCollisionRight(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s]));
                 }
             }
-            for(int e = 0; e < enemies.size(); e++) {
-                if(dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK || 
-                dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER || 
-                dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
-                    checkBlockCollisionRight(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(enemies[e]));
+            for(int e = 0; e < this->enemies.size(); e++) {
+                if(dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK || 
+                dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER || 
+                dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
+                    checkBlockCollisionRight(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->enemies[e]));
                 }
             }
         }
         if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_LEFT)) {
-            dynamic_cast<CollisionGameObject*>(players[p])->getVelocity().setX(velocity*-1);
-            dynamic_cast<DynamicGameObject*>(players[p])->setDirection(2);
-            for(int s = 0; s < staticsGameObjects.size(); s++) {
-                if(dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER|| 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
-                    checkBlockCollisionLeft(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(staticsGameObjects[s]));
+            dynamic_cast<CollisionGameObject*>(this->players[p])->getVelocity().setX(velocity*-1);
+            dynamic_cast<DynamicGameObject*>(this->players[p])->setDirection(2);
+            for(int s = 0; s < this->staticsGameObjects.size(); s++) {
+                if(dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER|| 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
+                    checkBlockCollisionLeft(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s]));
                 }
             }
-            for(int e = 0; e < enemies.size(); e++) {
-                if(dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK || 
-                dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER || 
-                dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
-                    checkBlockCollisionLeft(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(enemies[e]));
+            for(int e = 0; e < this->enemies.size(); e++) {
+                if(dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK || 
+                dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER || 
+                dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
+                    checkBlockCollisionLeft(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->enemies[e]));
                 }
             }
         }
         if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_UP)) {
-            dynamic_cast<CollisionGameObject*>(players[p])->getVelocity().setY(velocity*-1);
+            dynamic_cast<CollisionGameObject*>(this->players[p])->getVelocity().setY(velocity*-1);
             //dynamic_cast<DynamicGameObject*>(players[i])->setDirection(3);
-            for(int s = 0; s < staticsGameObjects.size(); s++) {
-                if(dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER|| 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
-                    checkBlockCollisionTop(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(staticsGameObjects[s]));
+            for(int s = 0; s < this->staticsGameObjects.size(); s++) {
+                if(dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER|| 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
+                    checkBlockCollisionTop(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s]));
                 }
             }
-            for(int e = 0; e < enemies.size(); e++) {
-                if(dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK || 
-                dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER || 
-                dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
-                    checkBlockCollisionTop(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(enemies[e]));
+            for(int e = 0; e < this->enemies.size(); e++) {
+                if(dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK || 
+                dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER || 
+                dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
+                    checkBlockCollisionTop(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->enemies[e]));
                 }
             }
         }
         if(TheInputManager::getInstance()->isKeyDown(SDL_SCANCODE_DOWN)) {
-            dynamic_cast<CollisionGameObject*>(players[p])->getVelocity().setY(velocity);
+            dynamic_cast<CollisionGameObject*>(this->players[p])->getVelocity().setY(velocity);
             //dynamic_cast<DynamicGameObject*>(players[i])->setDirection(4);
-            for(int s = 0; s < staticsGameObjects.size(); s++) {
-                if(dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER|| 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
-                    checkBlockCollisionDown(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(staticsGameObjects[s]));
+            for(int s = 0; s < this->staticsGameObjects.size(); s++) {
+                if(dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER|| 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
+                    checkBlockCollisionDown(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s]));
                 }
             }
-            for(int e = 0; e < enemies.size(); e++) {
-                if(dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK || 
-                dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER || 
-                dynamic_cast<CollisionGameObject*>(enemies[e])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
-                    checkBlockCollisionDown(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(enemies[e]));
+            for(int e = 0; e < this->enemies.size(); e++) {
+                if(dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK || 
+                dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER || 
+                dynamic_cast<CollisionGameObject*>(this->enemies[e])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
+                    checkBlockCollisionDown(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->enemies[e]));
                 }
             }
         }
-        players[p]->update();
+        this->players[p]->update();
     }
 }
 
 void Level::enemiesUpdate() {
     float velocity = 2.5;
 
-    for(int e = 0; e < enemies.size(); e++) {
+    for(int e = 0; e < this->enemies.size(); e++) {
         //BASIC GRAVITY WITHOUT ACCELERTATION USING BASIC VELOCITY
-        for(int s = 0; s < staticsGameObjects.size(); s++) {
-            if(dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER|| 
-                dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
-                dynamic_cast<CollisionGameObject*>(enemies[e])->getVelocity().setY(velocity);
-                checkBlockCollisionDown(dynamic_cast<CollisionGameObject*>(enemies[e]), dynamic_cast<CollisionGameObject*>(staticsGameObjects[s]));
+        for(int s = 0; s < this->staticsGameObjects.size(); s++) {
+            if(dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK || 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_AND_TRIGGER|| 
+                dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType() == COLLISION_BLOCK_CLICK_TRIGGER) {
+                dynamic_cast<CollisionGameObject*>(this->enemies[e])->getVelocity().setY(velocity);
+                checkBlockCollisionDown(dynamic_cast<CollisionGameObject*>(this->enemies[e]), dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s]));
             }
         }
 
-        enemies[e]->update();
+        this->enemies[e]->update();
     }
 }
 
 void Level::staticsGameObjectsUpdate() {
     //Check player collisions
-    for(int p = 0; p < players.size(); p++) {
+    for(int p = 0; p < this->players.size(); p++) {
         //PLAYER COLLIDE WITH ENEMY
         /*for(int e = 0; e < enemies.size(); e++) {
             enemies[e]->draw();
         }*/
         //PLAYER COLLIDE WITH STATIC GAMEOBJECT
-        for(int s = 0; s < staticsGameObjects.size(); s++) {
-            switch (dynamic_cast<CollisionGameObject*>(staticsGameObjects[s])->getCollider().getType()) {
+        for(int s = 0; s < this->staticsGameObjects.size(); s++) {
+            switch (dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s])->getCollider().getType()) {
                 case COLLISION_TRIGGER:
-                    if(checkCollision(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(staticsGameObjects[s]))){
-                        functionCallbacks[dynamic_cast<StaticGameObject*>(staticsGameObjects[s])->getID()]();
+                    if(checkCollision(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s]))){
+                        functionCallbacks[dynamic_cast<StaticGameObject*>(this->staticsGameObjects[s])->getID()]();
                     }
                     break;
                 case COLLISION_BLOCK_AND_TRIGGER:
-                    if(checkCollision(dynamic_cast<CollisionGameObject*>(players[p]), dynamic_cast<CollisionGameObject*>(staticsGameObjects[s]))){
-                        functionCallbacks[dynamic_cast<StaticGameObject*>(staticsGameObjects[s])->getID()]();
+                    if(checkCollision(dynamic_cast<CollisionGameObject*>(this->players[p]), dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s]))){
+                        functionCallbacks[dynamic_cast<StaticGameObject*>(this->staticsGameObjects[s])->getID()]();
                     }
-                    //std::cout << "-----COLLISION_BLOCK_AND_TRIGGER DETECTED-----" << std::endl;
+                    //SDL_Log("-----COLLISION_BLOCK_AND_TRIGGER DETECTED-----");
                     break;
                 case CLICK_TRIGGER:
-                    mousePos = TheInputManager::getInstance()->getMousePosition();                    
-                    if(checkMouseClick( dynamic_cast<CollisionGameObject*>(staticsGameObjects[s]))) {
+                    mousePos = TheInputManager::getInstance()->getMousePosition();
+                    if(checkMouseClick( dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s]))) {
                         if(TheInputManager::getInstance()->getMouseButtonState(LEFT) && released) {
-                            functionCallbacks[dynamic_cast<StaticGameObject*>(staticsGameObjects[s])->getID()]();
+                            functionCallbacks[dynamic_cast<StaticGameObject*>(this->staticsGameObjects[s])->getID()]();
                             released = false;
                         }
                     } else {
@@ -185,10 +210,10 @@ void Level::staticsGameObjectsUpdate() {
                     }
                     break;
                 case COLLISION_BLOCK_CLICK_TRIGGER:
-                    mousePos = TheInputManager::getInstance()->getMousePosition();                    
-                    if(checkMouseClick( dynamic_cast<CollisionGameObject*>(staticsGameObjects[s]))) {
+                    mousePos = TheInputManager::getInstance()->getMousePosition();
+                    if(checkMouseClick( dynamic_cast<CollisionGameObject*>(this->staticsGameObjects[s]))) {
                         if(TheInputManager::getInstance()->getMouseButtonState(LEFT) && released) {
-                            functionCallbacks[dynamic_cast<StaticGameObject*>(staticsGameObjects[s])->getID()]();
+                            functionCallbacks[dynamic_cast<StaticGameObject*>(this->staticsGameObjects[s])->getID()]();
                             released = false;
                         }
                     } else {
@@ -359,40 +384,16 @@ bool Level::checkBlockCollisionDown(CollisionGameObject* collider1, CollisionGam
 }
 
 bool Level::checkMouseClick(CollisionGameObject* gameObject){
-    return mousePos->getX() < gameObject->getPosition().getX() + gameObject->getWidth()
-    && mousePos->getX() > gameObject->getPosition().getX()
-    && mousePos->getY() < gameObject->getPosition().getY() + gameObject->getHeight()
-    && mousePos->getY() > gameObject->getPosition().getY();
+    return this->mousePos->getX() < gameObject->getPosition().getX() + gameObject->getWidth()
+    && this->mousePos->getX() > gameObject->getPosition().getX()
+    && this->mousePos->getY() < gameObject->getPosition().getY() + gameObject->getHeight()
+    && this->mousePos->getY() > gameObject->getPosition().getY();
 }
 
 void Level::COLLISION_TEST() {
-    std::cout << "_____COLLISION TRIGGER DETECTED_____" << std::endl;
+    SDL_Log("_____COLLISION TRIGGER DETECTED_____");
 }
 
 void Level::CLICK_TEST() {
-    std::cout << "_____CLICK ON GAMEOBJECT DETECTED_____" << std::endl;
-}
-
-Level::~Level() {
-    tilesets.clear();
-    
-    for (auto it : layers) {
-        delete it;
-    }
-    layers.clear();
-
-    for (auto it : players) {
-        delete it;
-    }
-    players.clear();
-
-    for (auto it : enemies) {
-        delete it;
-    }
-    enemies.clear();
-
-    for (auto it : staticsGameObjects) {
-        delete it;
-    }
-    staticsGameObjects.clear();
+    SDL_Log("_____CLICK ON GAMEOBJECT DETECTED_____");
 }

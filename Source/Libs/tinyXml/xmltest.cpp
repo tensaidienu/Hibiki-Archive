@@ -1980,10 +1980,10 @@ int main( int argc, const char ** argv )
 	                           "<first />"
 	                           "<second />";
 	    XMLDocument* doc = new XMLDocument();
-	    XMLTest( "XMLDocument::Value() returns null?", NULL, doc->Value() );
+	    XMLTest( "XMLDocument::Value() returns null?", nullptr, doc->Value() );
 	    doc->Parse( validXml );
 	    XMLTest( "Parse to test XMLDocument::Value()", false, doc->Error());
-	    XMLTest( "XMLDocument::Value() returns null?", NULL, doc->Value() );
+	    XMLTest( "XMLDocument::Value() returns null?", nullptr, doc->Value() );
 	    delete doc;
     }
 
@@ -2137,7 +2137,7 @@ int main( int argc, const char ** argv )
     {
         struct TestUtil: XMLVisitor
         {
-            TestUtil() : str() {}
+            TestUtil() : str(){}
 
             void TestParseError(const char *testString, const char *docStr, XMLError expected_error, int expectedLine)
             {

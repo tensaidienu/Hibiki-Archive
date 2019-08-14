@@ -1,6 +1,8 @@
 #include <iostream>
 #include <map>
 
+#include "SDL2/SDL.h"
+
 #include "GameStateMachine.h"
 #include "PlayState.h"
 #include "PauseState.h"
@@ -9,6 +11,13 @@
 
 GameStateMachine::GameStateMachine() {
 
+}
+
+GameStateMachine::~GameStateMachine() {
+    delete gameState;
+    delete tempGameState;
+    gameState = nullptr;
+    tempGameState = nullptr;
 }
 
 void GameStateMachine::initialState() {
@@ -25,6 +34,7 @@ void GameStateMachine::changeState(HibikiGameState type) {
             gameState = new MainMenuState();
             gameState->onEnter();
             delete tempGameState;
+            tempGameState = nullptr;
             wait = false;
             break;
         case HIBIKI_PLAY:
@@ -33,11 +43,12 @@ void GameStateMachine::changeState(HibikiGameState type) {
             tempGameState = gameState;
             gameState = new PlayState();
             gameState->onEnter();
-            delete tempGameState;
+            //delete tempGameState;
+            //tempGameState = nullptr;
             wait = false;
             break;
         case HIBIKI_PAUSE:
-            std::cout << "Pause" << std::endl;
+            SDL_Log("Game Paused");
             tempGameState = gameState;
             gameState = new PauseState();
             gameState->onEnter();
@@ -49,14 +60,14 @@ void GameStateMachine::changeState(HibikiGameState type) {
             gameState = new GameOverState();
             gameState->onEnter();
             delete tempGameState;
+            tempGameState = nullptr;
             wait = false;
             break;
     }
-    std::cout << "Change state: " << gameState->getStateID() << std::endl;
+    SDL_Log("Change state: %s", gameState->getStateID().c_str());
 }
 
 void GameStateMachine::pauseToMain() {
-    std::cout << "pauseToMain";
     wait = true;
     GameState* tempPauseState = gameState;
     tempPauseState->onExit();
@@ -65,33 +76,30 @@ void GameStateMachine::pauseToMain() {
     gameState->onEnter();
     delete tempPauseState;
     delete tempGameState;
+    tempPauseState = nullptr;
+    tempGameState = nullptr;
     wait = false;
 }
 
 void GameStateMachine::resumePlay() {
-    std::cout << "resumePlay";
-    wait = true;    
+    wait = true;
     GameState* tempPlayState = tempGameState;
     tempGameState = gameState;
     tempGameState->onExit();
     gameState = tempPlayState;
     delete tempGameState;
+    tempGameState = nullptr;
     wait = false;
 }
 
 void GameStateMachine::update() {
-    if(!wait){
+    if(!wait && gameState){
         gameState->update();
     }
 }
 
 void GameStateMachine::render() {
-    if(!wait){
+    if(!wait && gameState){
         gameState->render();
     }
-}
-
-GameStateMachine::~GameStateMachine() {
-    delete gameState;
-    delete tempGameState;
 }
