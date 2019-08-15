@@ -14,13 +14,17 @@
 
 ***
 
-The Hibiki web site . . . . . . . . .
+[天才ディエヌ](http://davidsonnathan.com.br) . . . . . . . . . . . . . .
 
-Support . . . . . . . . . . . . . . . . . .
+[DNGames](http://dngames.com.br) . . . . . . . . . . . . . . . . .
 
-Forums  . . . . . . . . . . . . . . . . . .
+Hibiki Game Engine . . . . . . . . .
 
-Wiki  . . . . . . . . . . . . . . . . . . . . .
+Support . . . . . . . . . . . . . . . . . . .
+
+Forums . . . . . . . . . . . . . . . . . . .
+
+Wiki . . . . . . . . . . . . . . . . . . . . . .
 
 ## Source Code Content
 
