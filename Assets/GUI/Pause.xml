@@ -1,0 +1,15 @@
+<?xml version="1.0" ?>
+<STATES>    
+    <PAUSE>
+        <TEXTURES>
+            <texture filename="../Assets/GUI/Menu/resume.png" ID="resumebutton" />
+            <texture filename="../Assets/GUI/Menu/main.png" ID="mainbutton" />
+        </TEXTURES>
+        <OBJECTS>
+            <object type="MenuButton" x="200" y="100" width="200" height="80" textureID="mainbutton" numFrames="0"
+                callbackID="pauseToMain" />
+            <object type="MenuButton" x="200" y="300" width="200" height="80" textureID="resumebutton" numFrames="0"
+                callbackID="resumePlay" />
+        </OBJECTS>
+    </PAUSE>
+</STATES>
