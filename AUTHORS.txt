@@ -1,5 +1,5 @@
 Hibiki Game Engine
 
-Programming
+Programming and Everything Else
 -----------
 TensaiDN

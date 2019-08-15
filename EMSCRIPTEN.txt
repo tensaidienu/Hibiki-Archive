@@ -1,5 +1,3 @@
-source ~/Tensai/GitClone/emsdk/emsdk_env.sh
-
 //-s ALLOW_MEMORY_GROWTH=1 ->>> allows the memory array to grow if needs be, but this involves a performance cost.
 //--output_eol windows|linux
 // --llvm-lto 1 -> Link Time Optimization (LTO) 

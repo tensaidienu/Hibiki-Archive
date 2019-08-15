@@ -1,4 +1,4 @@
-Initial functionalities 0.0.3-0.2:
+Initial functionalities 0.0.3-0.1:
 -------------------------------------
     *Change Hibiki LICENSE from LGPL to MIT
     
