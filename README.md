@@ -78,3 +78,8 @@ WebSource/         - Web Source files folder.
 
 ##### -Web Version-
 - Using the console go to the source folder and then use one of the commands in the EMSCRIPTEN.txt file, the build files will be placed inside WebBuild folder, the web version only works on a web server.
+
+## License
+Copyright (c) 天才ディエヌ - (TensaiDN). All rights reserved.
+
+Licensed under the MIT license.
