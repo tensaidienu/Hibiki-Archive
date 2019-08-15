@@ -69,8 +69,10 @@ WebSource/         - Web Source files folder.
 
 ### Build
 
+##### -PC Version-
 - Use CMake and set the Build and Source Folders then click in generate and configure.
 
 - Using the console go to the build folder and use the 'make' command, the build files will be placed inside the Build folder.
 
-- To build for web using the console go to the source folder and then use one of the commands in the EMSCRIPTEN.txt file, the build files will be placed inside WebBuild folder. The web version only works on a web server.
+##### -Web Version-
+- Using the console go to the source folder and then use one of the commands in the EMSCRIPTEN.txt file, the build files will be placed inside WebBuild folder, the web version only works on a web server.
