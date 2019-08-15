@@ -12,7 +12,7 @@ int main(int argc, char *argv[]) {
     SDL_Log("MAIN - Game init attempt...");
 
     //const char windowTitle[] = "Hibiki Game Engine";
-    std::string windowTitle = "Hibiki Game Engine";
+    std::string windowTitle = "Hibiki Game Engine - ALPHA Version 0.0.3";
     if(TheGame::getInstance()->init(windowTitle, 550, 100, 640, 480, SDL_WINDOW_RESIZABLE)) {
         SDL_Log("MAIN - Game init success!");
 
