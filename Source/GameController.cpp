@@ -31,8 +31,8 @@ bool GameController::init(std::string title, int xpos, int ypos, int width, int 
 	this->gameHeight = height;
 
     // attempt to initialize SDL
-    //if(SDL_Init(SDL_INIT_VIDEO) == 0) {
-    if(SDL_Init(SDL_INIT_EVERYTHING) == 0) {
+    if(SDL_Init(SDL_INIT_VIDEO) == 0) {
+    //if(SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         SDL_LogMessage(0, SDL_LOG_PRIORITY_INFO, "SDL init success");
         
         this->mainWindow = SDL_CreateWindow(title.c_str(), xpos, ypos, width, height, flags);

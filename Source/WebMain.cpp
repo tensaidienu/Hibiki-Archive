@@ -40,7 +40,7 @@ int main(int argc, char *argv[]) {
     ctx.x = 0;
 
     SDL_Log("Game init attempt...");
-    const char windowTitle[] = "Hibiki Game Engine";
+    const char windowTitle[] = "Hibiki Game Engine - ALPHA Version 0.0.3";
     if(TheGame::getInstance()->init(windowTitle, 550, 100, 640, 480, SDL_WINDOW_SHOWN)) {
         SDL_Log("Game init success!");
     } else {
