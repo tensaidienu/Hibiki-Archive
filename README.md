@@ -4,9 +4,9 @@
 
 ### Hibiki the best open source 2D game engine made with SDL2 in C++.
 
-[![Alpha](https://img.shields.io/static/v1?label=Downloads&message=Alpha-v0.0.3&color=yellow)](https://github.com/tensaidienu/Hibiki/releases)
-[![Alpha](https://img.shields.io/static/v1?label=Site&message=天才ディエヌ&color=black)](http://davidsonnathan.com.br)
-[![Alpha](https://img.shields.io/static/v1?label=Site&message=DNGames&color=black)](http://dngames.com.br)
+[![AlphaDownload](https://img.shields.io/static/v1?label=Downloads&message=Alpha-v0.0.3&color=yellow)](https://github.com/tensaidienu/Hibiki/releases)
+[![TensaiDN](https://img.shields.io/static/v1?label=Site&message=天才ディエヌ&color=black)](http://davidsonnathan.com.br)
+[![DNGames](https://img.shields.io/static/v1?label=Site&message=DNGames&color=black)](http://dngames.com.br)
 
 [comment]: <> (Hibiki Game Engine . . . . . . . . .)
 
