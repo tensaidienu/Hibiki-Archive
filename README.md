@@ -2,7 +2,7 @@
 
 ## Hibiki - ALPHA Version
 
-### Hibiki the best open source 2D game engine made with SDL in C++.
+### Hibiki the best open source 2D game engine made with SDL2 in C++.
 
 ---
 ***
