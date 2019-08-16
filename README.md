@@ -4,27 +4,21 @@
 
 ### Hibiki the best open source 2D game engine made with SDL2 in C++.
 
+[![Alpha](https://img.shields.io/static/v1?label=Downloads&message=Alpha-v0.0.3&color=yellow)](https://github.com/tensaidienu/Hibiki/releases)
+[![Alpha](https://img.shields.io/static/v1?label=Site&message=天才ディエヌ&color=black)](http://davidsonnathan.com.br)
+[![Alpha](https://img.shields.io/static/v1?label=Site&message=DNGames&color=black)](http://dngames.com.br)
+
+[comment]: <> (Hibiki Game Engine . . . . . . . . .)
+
+[comment]: <> (Support . . . . . . . . . . . . . . . . . . .)
+
+[comment]: <> (Forums . . . . . . . . . . . . . . . . . . .)
+
+[comment]: <> (Wiki . . . . . . . . . . . . . . . . . . . . . .)
+
 ---
 ***
 ---
-
-
-
-## Links
-
-***
-
-[天才ディエヌ](http://davidsonnathan.com.br) . . . . . . . . . . . . . .
-
-[DNGames](http://dngames.com.br) . . . . . . . . . . . . . . . . .
-
-Hibiki Game Engine . . . . . . . . .
-
-Support . . . . . . . . . . . . . . . . . . .
-
-Forums . . . . . . . . . . . . . . . . . . .
-
-Wiki . . . . . . . . . . . . . . . . . . . . . .
 
 ## Source Code Content
 
@@ -49,6 +43,7 @@ Source/            - Source files folder.
 
 WebSource/         - Web Source files folder.
 
+<br/><br/>
 
 ## Build Instructions
 
@@ -82,6 +77,8 @@ WebSource/         - Web Source files folder.
 
 ##### -Web Version-
 - Using the console go to the source folder and then use one of the commands in the EMSCRIPTEN.txt file, the build files will be placed inside WebBuild folder, the web version only works on a web server.
+
+<br/><br/>
 
 ## License
 Copyright (c) 天才ディエヌ - (TensaiDN). All rights reserved.
